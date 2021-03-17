@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import { api } from '@/services.js'
+
 export default {
   name: 'LoginUser',
   data() {
@@ -41,12 +43,23 @@ export default {
 
       const dataUser = {
         email: this.email,
-        pass: this.pass
+        password: this.pass
       };
-
-      console.log(dataUser)
       
-      return alert(`Usuário ${this.email} Logado!!`);
+      return api.post(`/user/login`, dataUser).then((r) => {
+        const dataUser = {
+          id: r.data.id,
+          name: r.data.name,
+          email: r.data.email,
+        };
+
+        if(r.data.login) {
+          console.log('Logado!')
+          this.$router.push({ name: 'Dashboard', params: { data: dataUser } })
+        } else {
+          console.log('Usuário não encontrado!');
+        }
+      });
     }
   }
 }

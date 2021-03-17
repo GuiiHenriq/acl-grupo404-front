@@ -12,6 +12,16 @@
         <label for="email_login">E-mail:</label>
         <input id="email_login" name="email_login" required="required" type="email" placeholder="meuemail@gmail.com" v-model="email"/>
       </p>
+
+      <p> 
+        <label for="phone_login">Telefone:</label>
+        <input id="phone_login" name="phone_login" required="required" type="phone" placeholder="11912341234" v-model="phone"/>
+      </p>
+
+      <p> 
+        <label for="user_login">Usuário:</label>
+        <input id="user_login" name="user_login" required="required" type="text" placeholder="gabriel" v-model="user"/>
+      </p>
            
       <p> 
         <label for="pass_login">Senha:</label>
@@ -31,34 +41,44 @@
 </template>
 
 <script>
+import { api } from '@/services.js'
+
 export default {
   name: 'RegisterUser',
   data() {
     return {
       name: null,
       email: null,
+      phone: null,
+      user: null,
       pass: null,
     };
   },
   methods: {
     createUser() {
-      let mailFormat = /^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$/;
-
-      console.log(this.email.match(mailFormat))
-
       if(this.name == null || this.name.length < 3) return alert('Nome inválido!');
-      if(this.email == null || this.email.match(mailFormat)) return alert('E-mail inválido');
+      if(this.email == null) return alert('E-mail inválido');
+      if(this.email == null) return alert('Telefone inválido');
       if(this.pass == null || this.pass.length < 4) return alert('Sua senha deve ter pelo menos 4 caracteres!');
 
       const dataUser = {
         name: this.name,
         email: this.email,
-        pass: this.pass
+        phone: this.phone,
+        login: this.user,
+        password: this.pass,
+        enabled: 1
       };
 
       console.log(dataUser);
       
-      return alert(`Usuário ${this.name} Cadastrado!!`);
+      return api.post(`/user`, dataUser).then(() => {
+        console.log('Criado!')
+      }, (error) => {
+        if (error.response.status === 400) {
+          alert('Falha no cadastro!')
+        }
+      });
     }
   }
 }

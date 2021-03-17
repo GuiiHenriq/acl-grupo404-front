@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Products from '../pages/Products.vue'
 import LoginUser from '../pages/LoginUser.vue'
 import RegisterUser from '../pages/RegisterUser.vue'
+import Dashboard from '../pages/Dashboard.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,12 @@ const routes = [
     path: '/register',
     name: 'RegisterUser',
     component: RegisterUser
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
+    props: true
   }
 ]
 
