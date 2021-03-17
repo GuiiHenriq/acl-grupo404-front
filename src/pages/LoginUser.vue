@@ -5,7 +5,7 @@
 
       <p> 
         <label for="email_login">E-mail:</label>
-        <input id="email_login" name="email_login" required="required" type="text" placeholder="meuemail@gmail.com" v-model="email"/>
+        <input id="email_login" name="email_login" required="required" type="email" placeholder="meuemail@gmail.com" v-model="email"/>
       </p>
            
       <p> 
@@ -36,6 +36,9 @@ export default {
   },
   methods: {
     loginUser() {
+      if(this.email == null) return alert('E-mail inválido');
+      if(this.pass == null || this.pass.length < 4) return alert('Sua senha deve ter pelo menos 4 caracteres!');
+
       const dataUser = {
         email: this.email,
         pass: this.pass
