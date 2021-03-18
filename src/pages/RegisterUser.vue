@@ -67,7 +67,7 @@ export default {
     createUser() {
       if(this.name == null || this.name.length < 3) return alert('Nome inválido!');
       if(this.email == null) return alert('E-mail inválido');
-      if(this.email == null) return alert('Telefone inválido');
+      if(this.phone == null) return alert('Telefone inválido');
       if(this.pass == null || this.pass.length < 4) return alert('Sua senha deve ter pelo menos 4 caracteres!');
 
       const dataUser = {
