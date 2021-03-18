@@ -4,7 +4,11 @@
       <router-link :to="{ path: '/' }" title="Ir para Página Inicial">LOJA</router-link>
     </h1>
 
-    <p>
+    <p v-if="getNameUser">
+      <router-link :to="{ path: '/dashboard' }" title="Ir para Página de Dashboard">{{getNameUser}}</router-link>
+    </p>
+
+    <p v-else>
       <router-link :to="{ path: '/login' }" title="Ir para Página de Login">LOGIN</router-link>
     </p>
   </header>
@@ -13,6 +17,15 @@
 <script>
 export default {
   name: "Header",
+  data() {
+    return {
+    };
+  },
+  computed: {
+    getNameUser() {
+      return this.$store.state.user.name;
+    }
+  },
 };
 </script>
 
@@ -38,6 +51,10 @@ export default {
   color: #E91E63;
   font-weight: 300;
   text-decoration: underline;
+}
+
+.header p a{
+  text-transform: uppercase;
 }
 
 /* =========== RESPONSIVE =========== */

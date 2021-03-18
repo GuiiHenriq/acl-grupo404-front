@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <form class="form-login" method="post" action="">
+    <form class="form-login">
       <h2>Registro</h2>
 
       <p> 
@@ -37,6 +37,14 @@
         <router-link :to="{ path: '/login' }" title="Ir para Página de Cadastro">Faça o Login</router-link>
       </p>
     </form>
+
+    <div class="alert-sucess" v-show="active">
+      <section>
+        <h2>USUÁRIO CADASTRADO</h2>
+        <router-link :to="{ path: '/login' }" title="Ir para Página de Cadastro">Faça o Login</router-link>
+        <button @click="active = false">X</button>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -47,6 +55,7 @@ export default {
   name: 'RegisterUser',
   data() {
     return {
+      active: false,
       name: null,
       email: null,
       phone: null,
@@ -73,12 +82,18 @@ export default {
       console.log(dataUser);
       
       return api.post(`/user`, dataUser).then(() => {
-        console.log('Criado!')
+        console.log('Criado!');
+        this.active = true;
       }, (error) => {
         if (error.response.status === 400) {
           alert('Falha no cadastro!')
         }
       });
+    }
+  },
+  created() {
+    if(this.$store.state.login) {
+      this.$router.push('/dashboard');
     }
   }
 }
@@ -130,5 +145,49 @@ export default {
 .form-login a {
   text-decoration: underline;
   font-weight: 700;
+}
+
+.alert-sucess {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.alert-sucess section {
+  position: relative;
+  width: 40%;
+  height: 40vh;
+  background: rgba(0,0,0,0.9);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.alert-sucess h2 {
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.alert-sucess a {
+  text-decoration: underline;
+  font-weight: 300;
+}
+
+.alert-sucess button{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #fff;
+  font-size: 30px;
+  cursor: pointer;
 }
 </style>

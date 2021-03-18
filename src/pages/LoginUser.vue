@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <form class="form-login" method="post" action=""> 
+    <form class="form-login"> 
       <h2>Login</h2> 
 
       <p> 
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { api } from '@/services.js'
+//import { api } from '@/services.js'
 
 export default {
   name: 'LoginUser',
@@ -37,7 +37,7 @@ export default {
     };
   },
   methods: {
-    loginUser() {
+    async loginUser() {
       if(this.email == null) return alert('E-mail inválido');
       if(this.pass == null || this.pass.length < 4) return alert('Sua senha deve ter pelo menos 4 caracteres!');
 
@@ -45,8 +45,15 @@ export default {
         email: this.email,
         password: this.pass
       };
+
+      try {
+        await this.$store.dispatch("getUsuario", dataUser);
+        await this.$router.push({ name: 'Dashboard'});
+      } catch(error){
+        console.log(error);
+      }
       
-      return api.post(`/user/login`, dataUser).then((r) => {
+      /*return api.post(`/user/login`, dataUser).then((r) => {
         const dataUser = {
           id: r.data.id,
           name: r.data.name,
@@ -56,10 +63,16 @@ export default {
         if(r.data.login) {
           console.log('Logado!')
           this.$router.push({ name: 'Dashboard', params: { data: dataUser } })
+          window.localStorage.setItem('user', JSON.stringify(dataUser));
         } else {
           console.log('Usuário não encontrado!');
         }
-      });
+      });*/
+    }
+  },
+  created() {
+    if(this.$store.state.login) {
+      this.$router.push('/dashboard');
     }
   }
 }

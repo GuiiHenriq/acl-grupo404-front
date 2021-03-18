@@ -22,6 +22,15 @@ export default {
     Header,
     //Footer,
   },
+  created() {
+    if(window.localStorage.user) {
+      let dataLocalStorage = localStorage.getItem('user');
+      let objData = JSON.parse(dataLocalStorage);
+
+      this.$store.commit("UPDATE_USUARIO", objData);
+      this.$store.commit("UPDATE_LOGIN", true);
+    }
+  }
 };
 </script>
 
