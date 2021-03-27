@@ -1,14 +1,7 @@
 <template>
   <footer class="footer">
     <p>
-      Projeto Desenvolvido por
-      <a
-        href="https://github.com/guiihenriq"
-        target="_blank"
-        title="Ir para Github"
-        >Guilherme Henrique</a
-      >
-      para Teste Técnico Keyrus
+      Grupo 404
     </p>
   </footer>
 </template>
@@ -27,7 +20,7 @@ export default {
   width: 100%;
   min-height: 60px;
   padding: 15px 20px;
-  background: #e80;
+  background: #C2185B;
   margin-top: 100px;
 }
 

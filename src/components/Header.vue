@@ -57,11 +57,11 @@ export default {
   text-transform: uppercase;
 }
 
-/* =========== RESPONSIVE =========== */
+/* ============= RESPONSIVE ============= */
 @media only screen and (max-width: 768px) {
   .header {
-    padding: 15px 0;
-    justify-content: center;
+    padding: 15px;
+    margin-bottom: 50px;
   }
 }
 </style>

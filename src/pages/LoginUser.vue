@@ -111,6 +111,15 @@ export default {
 
 .form-login input {
   margin-bottom: 15px;
+  border-radius: 4px;
+  border: 1px solid #fff;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(30, 60, 90, 0.10);
+  transition: all .3s;
+  font-size: 1rem;
+  font-family: Avenir,Helvetica,Arial,sans-serif;
+  margin-bottom: 15px;
+  width: 100%;
 }
 
 .form-login input[type="submit"] {
@@ -124,5 +133,13 @@ export default {
 .form-login a {
   text-decoration: underline;
   font-weight: 700;
+}
+
+/* ============= RESPONSIVE ============= */
+@media only screen and (max-width: 768px) {
+  .form-login {
+    padding: 50px 0;
+    max-width: initial;
+  }
 }
 </style>

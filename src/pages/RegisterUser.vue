@@ -3,34 +3,42 @@
     <form class="form-login">
       <h2>Registro</h2>
 
-      <p> 
-        <label for="name_login">Nome:</label>
-        <input id="name_login" name="name_login" required="required" type="text" placeholder="Gabriel" v-model="name"/>
-      </p>
+      <label for="name_login">Nome:</label>
+      <input id="name_login" name="name_login" required="required" type="text" placeholder="Gabriel" v-model="name"/>
 
-      <p> 
-        <label for="email_login">E-mail:</label>
-        <input id="email_login" name="email_login" required="required" type="email" placeholder="meuemail@gmail.com" v-model="email"/>
-      </p>
+      <label for="email_login">E-mail:</label>
+      <input id="email_login" name="email_login" required="required" type="email" placeholder="meuemail@gmail.com" v-model="email"/>
 
-      <p> 
-        <label for="phone_login">Telefone:</label>
-        <input id="phone_login" name="phone_login" required="required" type="phone" placeholder="11912341234" v-model="phone"/>
-      </p>
+      <label for="phone_login">Telefone:</label>
+      <input id="phone_login" name="phone_login" required="required" type="phone" placeholder="11912341234" v-model="phone"/>
 
-      <p> 
-        <label for="user_login">Usuário:</label>
-        <input id="user_login" name="user_login" required="required" type="text" placeholder="gabriel" v-model="user"/>
-      </p>
+      <label for="user_login">Usuário:</label>
+      <input id="user_login" name="user_login" required="required" type="text" placeholder="gabriel" v-model="user"/>
+
+      <label for="pass_login">Senha:</label>
+      <input id="pass_login" name="pass_login" required="required" type="password" placeholder="1234" v-model="pass"/> 
+
+      <label for="zipcode_login">Cep:</label>
+      <input id="zipcode_login" name="zipcode_login" required="required" type="text" placeholder="1234" v-model="zipCode" @keyup="getCep()"/> 
+
+      <label for="street_login">Rua:</label>
+      <input id="street_login" name="street_login" required="required" type="text" placeholder="1234" v-model="street"/> 
+
+      <label for="number_login">Numero:</label>
+      <input id="number_login" name="number_login" required="required" type="text" placeholder="1234" v-model="number"/> 
+
+      <label for="district_login">Bairro:</label>
+      <input id="district_login" name="district_login" required="required" type="text" placeholder="1234" v-model="district"/> 
+
+      <label for="city_login">Cidade:</label>
+      <input id="city_login" name="city_login" required="required" type="text" placeholder="1234" v-model="city"/> 
+
+      <label for="state_login">Estado:</label>
+      <input id="state_login" name="state_login" required="required" type="text" placeholder="1234" v-model="state"/>
            
-      <p> 
-        <label for="pass_login">Senha:</label>
-        <input id="pass_login" name="pass_login" required="required" type="password" placeholder="1234" v-model="pass"/> 
-      </p>
-           
-      <p> 
+      <div class="button">
         <input type="submit" value="Cadastrar" @click.prevent="createUser()"/> 
-      </p>
+      </div>
            
       <p class="link">
         Já tem uma conta?
@@ -49,7 +57,7 @@
 </template>
 
 <script>
-import { api } from '@/services.js'
+import { api, getCep } from '@/services.js'
 
 export default {
   name: 'RegisterUser',
@@ -61,9 +69,26 @@ export default {
       phone: null,
       user: null,
       pass: null,
+      zipCode: null,
+      street: null,
+      number: null,
+      district: null,
+      city: null,
+      state: null,
     };
   },
   methods: {
+    getCep() {
+      const zipCode = this.zipCode.replace(/\D/g, "");
+      if(zipCode.length === 8) {
+        getCep(zipCode).then(r => {
+          this.street = r.data.logradouro;
+          this.district = r.data.bairro;
+          this.city = r.data.localidade;
+          this.state = r.data.uf;
+        })
+      }
+    },
     createUser() {
       if(this.name == null || this.name.length < 3) return alert('Nome inválido!');
       if(this.email == null) return alert('E-mail inválido');
@@ -132,6 +157,15 @@ export default {
 
 .form-login input {
   margin-bottom: 15px;
+  border-radius: 4px;
+  border: 1px solid #fff;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(30, 60, 90, 0.10);
+  transition: all .3s;
+  font-size: 1rem;
+  font-family: Avenir,Helvetica,Arial,sans-serif;
+  margin-bottom: 15px;
+  width: 100%;
 }
 
 .form-login input[type="submit"] {
@@ -189,5 +223,14 @@ export default {
   color: #fff;
   font-size: 30px;
   cursor: pointer;
+}
+
+
+/* ============= RESPONSIVE ============= */
+@media only screen and (max-width: 768px) {
+  .form-login {
+    padding: 50px 0;
+    max-width: initial;
+  }
 }
 </style>
