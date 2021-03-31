@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Products from '../pages/Products.vue'
+import ProductItem from '../pages/ProductItem.vue'
 import LoginUser from '../pages/LoginUser.vue'
 import RegisterUser from '../pages/RegisterUser.vue'
 import Dashboard from '../pages/Dashboard.vue'
@@ -12,6 +13,12 @@ const routes = [
     path: '/',
     name: 'Products',
     component: Products
+  },
+  {
+    path: '/product/:id',
+    name: 'ProductItem',
+    component: ProductItem,
+    props: true
   },
   {
     path: '/login',

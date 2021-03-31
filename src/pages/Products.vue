@@ -2,59 +2,44 @@
   <div class="products-container">
     <h2 class="title">Lista de Produtos</h2>
 
-    <div class="products">
-      <div class="product">
-        <img class="thumbnail" src="../assets/thumbnail.jpg" alt="">
-        <p class="price">R$ 2.300,00</p>
-        <h2 class="name">Notebook</h2>
-        <p class="description">Gostaria de enfatizar que o início da atividade geral de formação de atitudes pode nos levar a considerar.</p>
-      </div>
-
-      <div class="product">
-        <img class="thumbnail" src="../assets/thumbnail.jpg" alt="">
-        <p class="price">R$ 2.300,00</p>
-        <h2 class="name">Notebook</h2>
-        <p class="description">Gostaria de enfatizar que o início da atividade geral de formação de atitudes pode nos levar a considerar.</p>
-      </div>
-
-      <div class="product">
-        <img class="thumbnail" src="../assets/thumbnail.jpg" alt="">
-        <p class="price">R$ 2.300,00</p>
-        <h2 class="name">Notebook</h2>
-        <p class="description">Gostaria de enfatizar que o início da atividade geral de formação de atitudes pode nos levar a considerar.</p>
-      </div>
-
-      <div class="product">
-        <img class="thumbnail" src="../assets/thumbnail.jpg" alt="">
-        <p class="price">R$ 2.300,00</p>
-        <h2 class="name">Notebook</h2>
-        <p class="description">Gostaria de enfatizar que o início da atividade geral de formação de atitudes pode nos levar a considerar.</p>
-      </div>
-
-      <div class="product">
-        <img class="thumbnail" src="../assets/thumbnail.jpg" alt="">
-        <p class="price">R$ 2.300,00</p>
-        <h2 class="name">Notebook</h2>
-        <p class="description">Gostaria de enfatizar que o início da atividade geral de formação de atitudes pode nos levar a considerar.</p>
-      </div>
-
-      <div class="product">
-        <img class="thumbnail" src="../assets/thumbnail.jpg" alt="">
-        <p class="price">R$ 2.300,00</p>
-        <h2 class="name">Notebook</h2>
-        <p class="description">Gostaria de enfatizar que o início da atividade geral de formação de atitudes pode nos levar a considerar.</p>
+    <div class="products" v-if="dataProduct">
+      <div class="product" v-for="(product, index) in dataProduct" :key="index">
+        <router-link :to="{name: 'ProductItem', params: {id: product.id}}">
+          <img class="thumbnail" src="../assets/thumbnail.jpg" alt="">
+          <p class="price">{{product.price | priceNumber}}</p>
+          <h2 class="name">{{product.name}}</h2>
+          <p class="description">{{product.description}}</p>
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { api } from '@/services.js'
+
 export default {
-  name: 'Products',
+  name: "Products",
   data() {
     return {
+      dataProduct: "",
     };
   },
+  methods: {
+    getProducts() {
+      return api.get(`/product`).then((r) => {
+        this.dataProduct = r.data.body.items;
+        console.log(this.dataProduct)
+      }, (error) => {
+        if (error.response.status === 400) {
+          alert('Falha ao cadastrar produto!')
+        }
+      });
+    }
+  },
+  created() {
+    this.getProducts();
+  }
 }
 </script>
 

@@ -16,25 +16,25 @@
       <input id="user_login" name="user_login" required="required" type="text" placeholder="gabriel" v-model="user"/>
 
       <label for="pass_login">Senha:</label>
-      <input id="pass_login" name="pass_login" required="required" type="password" placeholder="1234" v-model="pass"/> 
+      <input id="pass_login" name="pass_login" required="required" type="password" placeholder="4321" v-model="pass"/> 
 
       <label for="zipcode_login">Cep:</label>
-      <input id="zipcode_login" name="zipcode_login" required="required" type="text" placeholder="1234" v-model="zipCode" @keyup="getCep()"/> 
+      <input id="zipcode_login" name="zipcode_login" required="required" type="number" placeholder="04660-006" v-model="zipCode" @keyup="getCep()"/> 
 
       <label for="street_login">Rua:</label>
-      <input id="street_login" name="street_login" required="required" type="text" placeholder="1234" v-model="street"/> 
+      <input id="street_login" name="street_login" required="required" type="text" placeholder="Avenida Interlagos" v-model="street"/> 
 
       <label for="number_login">Numero:</label>
-      <input id="number_login" name="number_login" required="required" type="text" placeholder="1234" v-model="number"/> 
+      <input id="number_login" name="number_login" required="required" type="text" placeholder="3172" v-model="number"/> 
 
       <label for="district_login">Bairro:</label>
-      <input id="district_login" name="district_login" required="required" type="text" placeholder="1234" v-model="district"/> 
+      <input id="district_login" name="district_login" required="required" type="text" placeholder="Interlagos" v-model="district"/> 
 
       <label for="city_login">Cidade:</label>
-      <input id="city_login" name="city_login" required="required" type="text" placeholder="1234" v-model="city"/> 
+      <input id="city_login" name="city_login" required="required" type="text" placeholder="São Paulo" v-model="city"/> 
 
       <label for="state_login">Estado:</label>
-      <input id="state_login" name="state_login" required="required" type="text" placeholder="1234" v-model="state"/>
+      <input id="state_login" name="state_login" required="required" type="text" placeholder="SP" v-model="state"/>
            
       <div class="button">
         <input type="submit" value="Cadastrar" @click.prevent="createUser()"/> 

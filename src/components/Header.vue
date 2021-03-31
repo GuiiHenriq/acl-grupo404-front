@@ -55,6 +55,7 @@ export default {
 
 .header p a{
   text-transform: uppercase;
+  font-weight: bold;
 }
 
 /* ============= RESPONSIVE ============= */

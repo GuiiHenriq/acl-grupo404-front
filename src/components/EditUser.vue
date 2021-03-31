@@ -31,7 +31,7 @@
       <input id="district_login" name="district_login" required="required" type="text" placeholder="Interlagos" v-model="user.district"/> 
 
       <label for="city_login">Cidade:</label>
-      <input id="city_login" name="city_login" required="required" type="text" placeholder="Sao Paulo" v-model="user.city"/> 
+      <input id="city_login" name="city_login" required="required" type="text" placeholder="São Paulo" v-model="user.city"/> 
 
       <label for="state_login">Estado:</label>
       <input id="state_login" name="state_login" required="required" type="text" placeholder="SP" v-model="user.state"/> 

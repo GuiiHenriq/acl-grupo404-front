@@ -11,10 +11,16 @@
         <input id="price_product" name="price_product" required="required" type="number" placeholder="1.200,00" v-model="product.price"/>
         
         <label for="photos_product">Fotos:</label>
-        <input id="photos_product" name="photos_product" required="required" type="file" multiple="multiple" ref="photos"/>
+        <input id="photos_product" name="photos_product" required="required" type="file" accept="image/x-png,image/gif,image/jpeg" ref="photos"/>
 
         <label for="amount_product">Quantidade:</label>
         <input id="amount_product" name="amount_product" required="required" type="number" placeholder="10" v-model="product.amount"/>
+
+        <label for="sku_product">Sku:</label>
+        <input id="sku_product" name="sku_product" required="required" type="text" placeholder="K55TR12TUT" v-model="product.sku"/>
+
+        <label for="code_product">Code:</label>
+        <input id="code_product" name="code_product" required="required" type="number" placeholder="008883333" v-model="product.code"/>
         
         <label for="description_product">Descrição:</label>
         <textarea id="description_product" name="description_product" required="required" placeholder="1234" v-model="product.description"></textarea>
@@ -27,12 +33,29 @@
 
     <section class="products">
       <h2>Meus Produtos</h2>
+
+      <ul v-show="userProduct">
+        <li v-for="(product, index) in userProduct" :key="index">
+          <div class="product">
+            <div class="photo">
+              <img class="thumbnail" src="../assets/thumbnail.jpg" alt="">
+            </div>
+            <div class="infos">
+              <p class="price">{{product.price | priceNumber}}</p>
+              <h3 class="name">{{product.name}}</h3>
+              <p class="description">{{product.description}}</p>
+
+              <button class="deletar" @click="deteleProduct(product.id)">-</button>
+            </div>
+          </div>
+        </li>
+      </ul>
     </section>
   </div>
 </template>
 
 <script>
-//import { api } from '@/services.js'
+import { api } from '@/services.js'
 
 export default {
   name: "AddProduct",
@@ -44,45 +67,90 @@ export default {
         price: null,
         photos: null,
         amount: null,
+        sku: null,
+        code: null,
         description: null,
-      }
+      },
+      userProduct: null,
     };
   },
   methods: {
     addProduct() {
-      const form = new FormData();
-
+      /*const form = new FormData();
+      const slugUrl = this.product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w]+/g, '-').toLowerCase();
       const photos = this.$refs.photos.files;
-      for(let i = 0; i < photos.length; i++) {
-        form.append(photos[i].name, photos[i]);
-      }
 
-      console.log(photos)
-      console.log(photos.name)
-
+      form.append("id", this.idUser);
       form.append("name", this.product.name);
+      form.append("active", true);
+      form.append("slug_url", slugUrl);
       form.append("price", this.product.price);
-      form.append("amount", this.product.amount);
+      for(let i = 0; i < photos.length; i++) {
+        form.append("photos",  [{"path": photos[0].name}]);
+      }
+      form.append("qty", this.product.amount);
+      form.append("sku", this.product.sku);
+      form.append("code", this.product.code);
       form.append("description", this.product.description);
 
       let object = {};
       form.forEach((value, key) => object[key] = value);
       //var json = JSON.stringify(object);
-      const json = JSON.stringify(object);
+      const dataProduct = object;*/
 
-      return console.log(json);
+      const slugUrl = this.product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w]+/g, '-').toLowerCase();
+      const photos = this.$refs.photos.files;
 
-      /*const dataProduct = {
-        name: this.product.name,
-        price: this.product.price,
-        photos: this.product.photos,
-        amount: this.product.amount,
+      const dataProduct = {
+        user_id: this.idUser,
+        active: true,
+        code: this.product.code,
         description: this.product.description,
+        name: this.product.name,
+        product_images: [{"path": photos[0].name}],
+        price: this.product.price,
+        qty: this.product.amount,
+        sku: this.product.sku,
+        slug_url: slugUrl,
       }
-      console.log(dataProduct)*/
+
+      console.log(dataProduct);
+
+      return api.post(`/product`, dataProduct).then(() => {
+        console.log('Produto Cadastrado!');
+        this.getProductUser();
+      }, (error) => {
+        if (error.response.status === 400) {
+          alert('Falha ao cadastrar produto!')
+        }
+      });
+    },
+    getProductUser() {
+      return api.get(`/user/${this.idUser}`).then((r) => {
+        if(r.data.body[0].products.lenght < 0) return;
+        this.userProduct = r.data.body[0].products;
+      }, (error) => {
+        if (error.response.status === 400) {
+          alert('Nenhum produto cadastrado!')
+        }
+      });
+    },
+    deteleProduct(idProduct) {
+      const confirm = window.confirm('Deseja deletar esse produto?');
+
+      if(!confirm) return; 
+      
+      return api.delete(`/product/${idProduct}`).then(() => {
+          this.getProductUser();
+      }, (error) => {
+        if (error.response.status === 400) {
+          alert('Nenhum produto cadastrado!')
+        }
+      });
     }
   },
   created() {
+    this.getProductUser();
   }
 }
 </script>
@@ -125,6 +193,11 @@ export default {
   font-family: Avenir,Helvetica,Arial,sans-serif;
   margin-bottom: 15px;
   width: 100%;
+  resize: none;
+}
+
+.form-login textarea {
+  width: auto;
 }
 
 .form-login input:hover,
@@ -152,5 +225,42 @@ export default {
 .form-login .button {
   grid-column: 2;
   margin-top: 10px;
+}
+
+.product {
+  display: grid;
+  grid-template-columns: minmax(100px,200px) 1fr;
+  grid-gap: 20px;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.product .photo {
+  border-radius: 4px;
+  overflow: hidden;
+  height: 100px;
+}
+
+.product .thumbnail {
+  max-width: 100%;
+}
+
+.product .infos {
+  align-self: center;
+}
+
+.product .infos h3 {
+  font-weight: 700;
+  color: #C2185B;
+  margin: 5px 0;
+  font-size: 20px;
+}
+
+/* ============= RESPONSIVE ============= */
+@media only screen and (max-width: 768px) {
+  .product {
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+  }
 }
 </style>

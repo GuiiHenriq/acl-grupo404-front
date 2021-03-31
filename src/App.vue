@@ -90,10 +90,13 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+body, input, textarea {
+  font-family: 'Roboto', sans-serif;
+}
 
 /* =========== STYLE GLOBAL =========== */
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
