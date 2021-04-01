@@ -45,7 +45,7 @@
               <h3 class="name">{{product.name}}</h3>
               <p class="description">{{product.description}}</p>
 
-              <button class="deletar" @click="deteleProduct(product.id)">-</button>
+              <button class="deletar" @click="deteleProduct(product.id)">DELETAR</button>
             </div>
           </div>
         </li>

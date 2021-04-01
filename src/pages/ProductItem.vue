@@ -52,6 +52,7 @@ export default {
   data() {
     return {
       checked: false,
+      teste: null,
       dataProduct: "",
       addressUser: {
         zipCode: null,
@@ -86,7 +87,16 @@ export default {
       console.log(addressUser);
     },
     buyItem() {
+      const dataProduct = this.dataProduct;
+      let qtyProduct = 0;
+
+      for(let i = 0; i < dataProduct.length; i++) qtyProduct = dataProduct[i].qty = dataProduct[i].qty - 1;
+
+      if(qtyProduct <= 0) return alert('Produto Esgotou') ;
+
+      console.log(qtyProduct);
       console.log(this.dataProduct);
+
       if(this.checked) return this.changeAddress();
     },
     getCep() {

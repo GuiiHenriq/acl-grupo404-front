@@ -2,8 +2,8 @@
   <div class="products-container">
     <h2 class="title">Lista de Produtos</h2>
 
-    <div class="products" v-if="dataProduct">
-      <div class="product" v-for="(product, index) in dataProduct" :key="index">
+    <div class="products" v-show="dataProduct">
+      <div class="product" v-for="(product, index) in dataProduct" :key="index" v-show="product.user_id !== idUser">
         <router-link :to="{name: 'ProductItem', params: {id: product.id}}">
           <img class="thumbnail" src="../assets/thumbnail.jpg" alt="">
           <p class="price">{{product.price | priceNumber}}</p>
@@ -22,6 +22,7 @@ export default {
   name: "Products",
   data() {
     return {
+      idUser: this.$store.state.user.id,
       dataProduct: "",
     };
   },
