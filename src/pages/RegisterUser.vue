@@ -16,7 +16,10 @@
       <input id="user_login" name="user_login" required="required" type="text" placeholder="gabriel" v-model="user"/>
 
       <label for="pass_login">Senha:</label>
-      <input id="pass_login" name="pass_login" required="required" type="password" placeholder="4321" v-model="pass"/> 
+      <input id="pass_login" name="pass_login" required="required" type="password" placeholder="4321" v-model="pass"/>
+
+      <label for="typeAddress_login">Tipo de Endereço:</label>
+      <input id="typeAddress_login" name="typeAddress_login" required="required" type="text" placeholder="Trabalho" v-model="typeAddress"/> 
 
       <label for="zipcode_login">Cep:</label>
       <input id="zipcode_login" name="zipcode_login" required="required" type="number" placeholder="04660-006" v-model="zipCode" @keyup="getCep()"/> 
@@ -25,7 +28,10 @@
       <input id="street_login" name="street_login" required="required" type="text" placeholder="Avenida Interlagos" v-model="street"/> 
 
       <label for="number_login">Numero:</label>
-      <input id="number_login" name="number_login" required="required" type="text" placeholder="3172" v-model="number"/> 
+      <input id="number_login" name="number_login" required="required" type="text" placeholder="3172" v-model="number"/>
+
+      <label for="complement_login">Complemento:</label>
+      <input id="complement_login" name="complement_login" required="required" type="text" placeholder="Ap 35" v-model="complement"/> 
 
       <label for="district_login">Bairro:</label>
       <input id="district_login" name="district_login" required="required" type="text" placeholder="Interlagos" v-model="district"/> 
@@ -69,9 +75,11 @@ export default {
       phone: null,
       user: null,
       pass: null,
+      typeAddress: null,
       zipCode: null,
       street: null,
       number: null,
+      complement: null,
       district: null,
       city: null,
       state: null,
@@ -101,10 +109,20 @@ export default {
         phone: this.phone,
         login: this.user,
         password: this.pass,
-        enabled: 1
+        enabled: 1,
+        user_address: [
+          {
+            type_name: this.typeAddress,
+            cep: this.zipCode,
+            street: this.street,
+            number: this.number,
+            complement: this.complement,
+            district: this.district,
+            city: this.city,
+            state: this.state
+          }
+        ]
       };
-
-      console.log(dataUser);
       
       return api.post(`/user`, dataUser).then(() => {
         console.log('Criado!');
@@ -137,7 +155,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   background: #fff;
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
   padding: 50px;
@@ -149,6 +166,7 @@ export default {
   margin-bottom: 30px;
   text-transform: uppercase;
   font-size: 24px;
+  text-align: center;
 }
 
 .form-login label {

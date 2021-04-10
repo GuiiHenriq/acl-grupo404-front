@@ -96,7 +96,7 @@ export default {
 /* ============= RESPONSIVE ============= */
 @media only screen and (max-width: 768px) {
   .products {
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(1,1fr);
     grid-gap: 10px;
     margin: 10px;
   }

@@ -5,6 +5,7 @@ import ProductItem from '../pages/ProductItem.vue'
 import LoginUser from '../pages/LoginUser.vue'
 import RegisterUser from '../pages/RegisterUser.vue'
 import Dashboard from '../pages/Dashboard.vue'
+import SuccessSale from '../pages/SuccessSale.vue'
 
 Vue.use(VueRouter)
 
@@ -35,6 +36,11 @@ const routes = [
     name: 'Dashboard',
     component: Dashboard,
     props: true
+  },
+  {
+    path: '/success',
+    name: 'SuccessSale',
+    component: SuccessSale,
   }
 ]
 

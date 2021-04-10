@@ -72,12 +72,22 @@ export default {
     getUser() {
       return api.get(`/user/${this.idUser}`).then((r) => {
         const dataUser = r.data.body[0];
+        const addressUser = r.data.body[0].user_address[0];
+
+        console.log(dataUser)
 
         this.active = true;
         this.user.email = dataUser.email;
         this.user.name = dataUser.name;
         this.user.user = dataUser.login;
         this.user.phone = dataUser.phone;
+        this.user.pass = dataUser.password;
+        this.user.zipCode = addressUser.cep;
+        this.user.street = addressUser.street;
+        this.user.number = addressUser.number;
+        this.user.district = addressUser.district;
+        this.user.city = addressUser.city;
+        this.user.state = addressUser.state;
       }, (error) => {
         if (error.response.status === 400) {
           alert('Usuário não encontrado!')

@@ -5,7 +5,7 @@
     <div class="content" v-if="this.$store.state.user">
       <nav>
         <button @click="addProduct = true;mySales = false;myCart = false;editUser = false">CADASTRAR PRODUTO</button>
-        <button @click="mySales = true;addProduct = false;myCart = false;editUser = false">MINHAS VENDAS</button>
+        <!--<button @click="mySales = true;addProduct = false;myCart = false;editUser = false">MINHAS VENDAS</button>-->
         <button @click="myCart = true;addProduct = false;mySales = false;editUser = false">MINHAS COMPRAS</button>
         <button @click="editUser = true;addProduct = false;mySales = false;myCart = false">EDITAR USUÁRIO</button>
         <button @click="logOut()">SAIR</button>
@@ -13,7 +13,7 @@
 
       <section>
         <AddProduct v-show="addProduct" />
-        <MySales v-show="mySales" />
+        <!--<MySales v-show="mySales" />-->
         <MyCart v-show="myCart" />
         <EditUser v-show="editUser" />
       </section>
@@ -23,7 +23,7 @@
 
 <script>
 import AddProduct from '@/components/AddProduct';
-import MySales from '@/components/MySales';
+//import MySales from '@/components/MySales';
 import MyCart from '@/components/MyCart';
 import EditUser from '@/components/EditUser';
 
@@ -31,7 +31,7 @@ export default {
   name: "Dashboard",
   components: {
     AddProduct,
-    MySales,
+    //MySales,
     MyCart,
     EditUser,
   },

@@ -1,40 +1,65 @@
 <template>
   <div class="products-container">
     <section v-if="dataProduct">
-      <div class="product" v-for="(product, index) in dataProduct" :key="index">
+      <div class="product" v-for="(product, index) in dataProduct" :key="index" :data-id="product.id" :data-qty="product.qty" ref="item">
         <ul class="photos">
           <li><img class="thumbnail" src="../assets/thumbnail.jpg" alt=""></li>
         </ul>
         <div class="info">
           <h2 class="name">{{product.name}}</h2>
-          <h3 class="price">{{product.price | priceNumber}}</h3>
+          <h3 class="price" :data-price="product.price" ref="price">{{product.price | priceNumber}}</h3>
           <p class="description">{{product.description}}</p>
+
+          <div class="quantity-toggle">
+            <button @click="decrement()">&mdash;</button>
+            <input type="text" :value="quantity">
+            <button @click="increment()">&#xff0b;</button>
+          </div>
+          <p class="qty">Quantidade Disponível: {{product.qty}}</p>
+
+
           <button class="btn" @click="buyItem()">Comprar</button>
 
-          <div>
-            <input type="checkbox" id="change_address" name="change_address" v-model="checked">
-            <label class="checkbox-address" for="change_address">Mudar endereço de entrega?</label>
+          <div class="address-user">
+            <h3>Selecione seu Endereço</h3>
+            <div v-for="(address, index) in addressUser" :key="index">
+              <input type="radio" :id="address.id" :name="address.id" :value="address.id" v-model="addressId">
+              <label :for="address.id">{{address.type_name}}</label>
+              <p>{{address.street}}, {{address.number}} - {{address.district}}</p>
+              <p>{{address.city}}/{{address.state}}</p>
+            </div>
           </div>
 
-          <div v-show="checked">
+          <div class="checkbox-address">
+            <input type="radio" id="newAddress" name="newAddress" value="newAddress" v-model="addressId">
+            <label for="change_address">Mudar endereço de entrega?</label>
+          </div>
+
+          <div v-show="addressId === 'newAddress'">
             <form class="form-login">
+              <label for="typeAddress_login">Tipo de Endereço:</label>
+              <input id="typeAddress_login" name="typeAddress_login" required="required" type="text" placeholder="Trabalho" v-model="newAddressUser.typeAddress"/> 
+
               <label for="zipcode_login">Cep:</label>
-              <input id="zipcode_login" name="zipcode_login" required="required" type="number" placeholder="04660-006" v-model="addressUser.zipCode" @keyup="getCep()"/> 
+              <input id="zipcode_login" name="zipcode_login" required="required" type="number" placeholder="04660-006" v-model="newAddressUser.zipCode" @keyup="getCep()"/> 
 
               <label for="street_login">Rua:</label>
-              <input id="street_login" name="street_login" required="required" type="text" placeholder="Avenida Interlagos" v-model="addressUser.street"/> 
+              <input id="street_login" name="street_login" required="required" type="text" placeholder="Avenida Interlagos" v-model="newAddressUser.street"/> 
 
               <label for="number_login">Numero:</label>
-              <input id="number_login" name="number_login" required="required" type="text" placeholder="3172" v-model="addressUser.number"/> 
+              <input id="number_login" name="number_login" required="required" type="text" placeholder="3172" v-model="newAddressUser.number"/> 
+
+              <label for="complement_login">Complemento:</label>
+              <input id="complement_login" name="complement_login" required="required" type="text" placeholder="Ap 35" v-model="newAddressUser.complement"/>
 
               <label for="district_login">Bairro:</label>
-              <input id="district_login" name="district_login" required="required" type="text" placeholder="Interlagos" v-model="addressUser.district"/> 
+              <input id="district_login" name="district_login" required="required" type="text" placeholder="Interlagos" v-model="newAddressUser.district"/> 
 
               <label for="city_login">Cidade:</label>
-              <input id="city_login" name="city_login" required="required" type="text" placeholder="São Paulo" v-model="addressUser.city"/> 
+              <input id="city_login" name="city_login" required="required" type="text" placeholder="São Paulo" v-model="newAddressUser.city"/> 
 
               <label for="state_login">Estado:</label>
-              <input id="state_login" name="state_login" required="required" type="text" placeholder="SP" v-model="addressUser.state"/>
+              <input id="state_login" name="state_login" required="required" type="text" placeholder="SP" v-model="newAddressUser.state"/>
             </form>
           </div>
         </div>
@@ -52,19 +77,34 @@ export default {
   data() {
     return {
       checked: false,
-      teste: null,
       dataProduct: "",
-      addressUser: {
+      idUser: this.$store.state.user.id,
+      quantity: 1,
+      newAddressUser: {
+        typeAddress: null,
         zipCode: null,
         street: null,
         number: null,
+        complement: null,
         district: null,
         city: null,
         state: null,
-      }
+      },
+      addressUser: null,
+      addressId: 0,
     };
   },
   methods: {
+    increment () {
+      this.quantity++;
+    },
+    decrement () {
+      if(this.quantity === 1) {
+        alert('Informe uma quantidade válida!')
+      } else {
+        this.quantity--;
+      }
+    },
     getProduct() {
       return api.get(`/product/${this.id}`).then((r) => {
         this.dataProduct = r.data.body;
@@ -76,43 +116,120 @@ export default {
     },
     changeAddress() {
       const addressUser = {
-        zipCode: this.addressUser.zipCode,
-        street: this.addressUser.street,
-        number: this.addressUser.number,
-        district: this.addressUser.district,
-        city: this.addressUser.city,
-        state: this.addressUser.state,
+        user_id: this.idUser,
+        type_name: this.newAddressUser.zipCode,
+        cep: this.newAddressUser.zipCode,
+        street: this.newAddressUser.street,
+        complement: this.newAddressUser.complement,
+        number: this.newAddressUser.number,
+        district: this.newAddressUser.district,
+        city: this.newAddressUser.city,
+        state: this.newAddressUser.state,
       }
 
       console.log(addressUser);
+
+      return api.post(`/user/address`, addressUser).then(() => {
+        console.log('Endereço Cadastrado')
+      }, (error) => {
+        if (error.response.status === 400) {
+          alert('Falha ao cadastrar produto!')
+        }
+      });
     },
     buyItem() {
-      const dataProduct = this.dataProduct;
-      let qtyProduct = 0;
+      //const dataProduct = this.dataProduct;
+      //let qtyProduct = 0;
+      const qtyBuy = Number(this.$refs.item[0].dataset.qty);
+      const qtyItem = this.quantity;
+      const calcQty = qtyBuy - qtyItem;
 
-      for(let i = 0; i < dataProduct.length; i++) qtyProduct = dataProduct[i].qty = dataProduct[i].qty - 1;
+      if(this.addressId == 0) return alert('Escolha seu endereço');
 
-      if(qtyProduct <= 0) return alert('Produto Esgotou') ;
+      if(calcQty > 0 || calcQty == 0) {
+        this.updateQty(calcQty);
+      } else {
+        return alert('Quantidade Indisponível');
+      }
 
-      console.log(qtyProduct);
-      console.log(this.dataProduct);
+      //for(let i = 0; i < dataProduct.length; i++) qtyProduct = dataProduct[i].qty = dataProduct[i].qty - 1;
 
-      if(this.checked) return this.changeAddress();
+      if(this.changeAddress == 'newAddress') this.changeAddress();
+
+
+      //if(qtyProduct <= 0) return alert('Produto Esgotou');
+      //if(this.quantity > qtyProduct) return alert('Quantidade Indisponível');
+
+      this.dataItem();
+      //this.updateQty(qtyProduct);
     },
     getCep() {
-      const zipCode = this.addressUser.zipCode.replace(/\D/g, "");
+      const zipCode = this.newAddressUser.zipCode.replace(/\D/g, "");
       if(zipCode.length === 8) {
         getCep(zipCode).then(r => {
-          this.addressUser.street = r.data.logradouro;
-          this.addressUser.district = r.data.bairro;
-          this.addressUser.city = r.data.localidade;
-          this.addressUser.state = r.data.uf;
+          this.newAddressUser.street = r.data.logradouro;
+          this.newAddressUser.district = r.data.bairro;
+          this.newAddressUser.city = r.data.localidade;
+          this.newAddressUser.state = r.data.uf;
         })
       }
     },
+    getAddressUser() {
+      return api.get(`/user/${this.idUser}`).then((r) => {
+        this.addressUser = r.data.body[0].user_address;
+      }, (error) => {
+        if (error.response.status === 400) {
+          alert('Falha ao encontrar usuário!')
+        }
+      });
+    },
+    dataItem() {
+      const priceItem = this.$refs.price[0].dataset.price;
+      const idItem = this.$refs.item[0].dataset.id;
+
+      const dataItem = {
+        user_id: this.idUser,
+        status_id: 1,
+        user_address_id: this.addressId,
+        total: priceItem,
+        products: [
+            {
+              product_id: idItem,
+              qty: this.quantity
+            }
+        ]
+      }
+
+      console.log(dataItem);
+
+      return api.post(`/order`, dataItem).then(() => {
+        console.log('COMPRADO!');
+        this.$router.push('/success');
+      }, (error) => {
+        if (error.response.status === 400) {
+          alert('Falha ao encontrar usuário!!')
+        }
+      });
+    },
+    updateQty(qtyValue) {
+      const idItem = this.$refs.item[0].dataset.id;
+
+      const qtyItem = {
+        qty: qtyValue
+      }
+
+      return api.put(`/product/${idItem}`, qtyItem).then(() => {
+        console.log('Quantidade Atualizado');
+      }, (error) => {
+        if (error.response.status === 400) {
+          alert('Falha ao encontrar produto!')
+        }
+      });
+    }
   },
   created() {
     this.getProduct();
+    this.getAddressUser();
   }
 }
 </script>
@@ -159,6 +276,10 @@ export default {
   font-size: 1.2rem;
 }
 
+.product .qty {
+  margin-top: 5px;
+}
+
 .product .btn {
   margin: 60px 0;
   width: 200px;
@@ -174,7 +295,11 @@ export default {
   cursor: pointer;
 }
 
-.checkbox-address {
+.quantity-toggle {
+  margin-top: 20px;
+}
+
+.checkbox-address label {
   text-transform: uppercase;
   font-size: 18px;
   font-weight: 500;
@@ -207,6 +332,59 @@ export default {
   color: #fff;
   cursor: pointer;
 }
+
+pre {
+  background: #eee;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.quantity-toggle {
+	display: flex;
+}
+
+ .quantity-toggle input {
+	border: 0;
+	border-top: 2px solid #333;
+	border-bottom: 2px solid #333;
+	width: 2.5rem;
+	text-align: center;
+	padding: 0 0.5rem;
+  font-weight: 700;
+}
+
+ .quantity-toggle button {
+	border: 2px solid #333;
+	padding: 0.5rem;
+	background: #C2185B;
+	color: #fff;
+	font-size: 1rem;
+	cursor: pointer;
+}
+
+.address-user h3 {
+  font-weight: 700;
+  color: #C2185B;
+  margin-bottom: 30px;
+  font-size: 26px;
+}
+
+.address-user div {
+  border: 2px solid #333;
+  border-radius: 4px;
+  max-width: 300px;
+  width: 100%;
+  padding: 40px 20px;
+  margin-bottom: 15px;
+}
+
+.address-user div label {
+  font-weight: 700;
+  color: #C2185B;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
 
 /* ============= RESPONSIVE ============= */
 @media only screen and (max-width: 768px) {
