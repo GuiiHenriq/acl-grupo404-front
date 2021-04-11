@@ -3,10 +3,7 @@
     <section v-if="dataProduct">
       <div class="product" v-for="(product, index) in dataProduct" :key="index" :data-id="product.id" :data-qty="product.qty" ref="item">
         <ul class="photos">
-          <li><img class="thumbnail" src="../assets/thumbnail.jpg" alt=""></li>
-          <!--<li><img class="thumbnail" src="product.productImages[0].path" alt=""></li>-->
-
-          {{product.productImages[0].path}}
+          <li><img class="thumbnail" :src="'http://localhost:2000/' + product.productImages[0].path" alt=""></li>
         </ul>
         <div class="info">
           <h2 class="name">{{product.name}}</h2>
@@ -234,12 +231,10 @@ export default {
     }
   },
   created() {
-    this.getProduct();
     if(this.$store.state.login) {
       this.getAddressUser();
-    } else {
-      console.log('nao')
     }
+    this.getProduct();
   }
 }
 </script>
@@ -263,6 +258,10 @@ export default {
 .product .photos {
   grid-row: 1/3;
   list-style: none;
+}
+
+.product .photos img {
+  width: 100%;
 }
 
 .product .info {

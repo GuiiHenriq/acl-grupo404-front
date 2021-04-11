@@ -34,7 +34,7 @@
     <section class="products">
       <h2>Meus Produtos</h2>
 
-      <ul v-show="userProduct">
+      <ul v-if="userProduct">
         <li v-for="(product, index) in userProduct" :key="index">
           <div class="product">
             <div class="photo">
@@ -50,6 +50,10 @@
           </div>
         </li>
       </ul>
+
+      <div v-else>
+        <h2>Você não tem nenhum produto cadastrado</h2>
+      </div>
     </section>
   </div>
 </template>
@@ -76,68 +80,11 @@ export default {
   },
   methods: {
     addProduct() {
-      /*var form = new FormData();
-      const photos = this.$refs.photos.files;
-      form.append("photos", photos[0]);
-      form.append("user_id", 18);
-      form.append("name", "teste4");
-      form.append("active", true);
-      form.append("slug_url", "teste-produto-4");
-      form.append("price", "22.50");
-      form.append("qty", "10");
-      form.append("sku", "67546fd");
-      form.append("code", "daae545aa");
-      form.append("description", "Teste4");
-
-      var requestOptions = {
-        method: 'POST',
-        body: form,
-        redirect: 'follow'
-      };
-
-      fetch("http://localhost:2000/product", requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));*/
-
-      /*const form = new FormData();
-      const slugUrl = this.product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w]+/g, '-').toLowerCase();
-      const photos = this.$refs.photos.files;
-
-      const dataProduct = {
-        user_id: this.idUser,
-        active: true,
-        code: this.product.code,
-        description: this.product.description,
-        name: this.product.name,
-        price: this.product.price,
-        qty: this.product.amount,
-        sku: this.product.sku,
-        slug_url: slugUrl,
-      }
-
-      form.append("fields_data", dataProduct);
-      form.append("photos", photos[0]);
-
-      var requestOptions = {
-        body: form,
-        redirect: 'follow'
-      };
-
-      console.log(form)
-
-      return api.post(`/product`, requestOptions).then(() => {
-        console.log('Produto Cadastrado!');
-        this.getProductUser();
-      }, (error) => {
-        if (error.response.status === 400) {
-          alert('Falha ao cadastrar produto!')
-        }
-      });*/
-      
       const formData = new FormData();
       const slugUrl = this.product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w]+/g, '-').toLowerCase();
       const photos = this.$refs.photos.files;
+
+      console.log(photos[0])
 
       formData.append("photos", photos[0]);
       formData.append("user_id", this.idUser);
@@ -150,11 +97,6 @@ export default {
       formData.append("code", this.product.code);
       formData.append("description", this.product.description);
 
-      //let object = {};
-      //formData.forEach((value, key) => object[key] = value);
-      //var json = JSON.stringify(object);
-      //const dataProduct = object;
-
       return api.post(`/product`, formData).then(() => {
         console.log('Produto Cadastrado!');
         this.getProductUser();
@@ -163,6 +105,10 @@ export default {
           alert('Falha ao cadastrar produto!')
         }
       });
+
+      //let object = {};
+      //formData.forEach((value, key) => object[key] = value);
+      //var json = JSON.stringify(object);
     },
     getProductUser() {
       return api.get(`/user/${this.idUser}`).then((r) => {
@@ -170,7 +116,7 @@ export default {
         this.userProduct = r.data.body[0].products;
       }, (error) => {
         if (error.response.status === 400) {
-          alert('Nenhum produto cadastrado!')
+          console.log('Nenhum produto cadastrado!')
         }
       });
     },
@@ -183,9 +129,14 @@ export default {
           this.getProductUser();
       }, (error) => {
         if (error.response.status === 400) {
-          alert('Nenhum produto cadastrado!')
+          console.log('Nenhum produto cadastrado!')
         }
       });
+    }
+  },
+  beforeCreate() {
+    if(!this.$store.state.login) {
+      this.$router.push('/');
     }
   },
   created() {

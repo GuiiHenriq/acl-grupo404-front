@@ -51,6 +51,10 @@
       </div>
     </div>
 
+    <div v-else>
+      <h2>Nenhum endereço cadastrado</h2>
+    </div>
+
     <div class="modal-change-address" v-if="activeAdd">
       <section>
         <form class="form-login">
@@ -128,7 +132,7 @@ export default {
         this.addressUser = r.data.body[0].user_address;
       }, (error) => {
         if (error.response.status === 400) {
-          alert('Falha ao encontrar usuário!')
+          console.log('Falha ao encontrar usuário!')
         }
       });
     },
@@ -141,7 +145,7 @@ export default {
           this.getAddressUser();
       }, (error) => {
         if (error.response.status === 400) {
-          alert('Nenhum endereço cadastrado!')
+          console.log('Nenhum endereço cadastrado!')
         }
       });
     },
@@ -163,7 +167,7 @@ export default {
         this.editAddressUser.state = obj.state
       }, (error) => {
         if (error.response.status === 400) {
-          alert('Falha ao encontrar usuário!')
+          console.log('Falha ao encontrar usuário!')
         }
       });
     },
@@ -235,6 +239,9 @@ export default {
     },
   },
   created() {
+    if(!this.$store.state.login) {
+      this.$router.push('/');
+    }
     this.getAddressUser();
   }
 }

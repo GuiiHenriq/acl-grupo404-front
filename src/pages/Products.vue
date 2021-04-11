@@ -5,13 +5,10 @@
     <div class="products" v-show="dataProduct">
       <div class="product" v-for="(product, index) in dataProduct" :key="index" v-show="product.user_id !== idUser">
         <router-link :to="{name: 'ProductItem', params: {id: product.id}}">
-          <img class="thumbnail" src="../assets/thumbnail.jpg" alt="">
-          <!--<img class="thumbnail" :src="product.productImages[0].path" alt="">-->
+          <img class="thumbnail" :src="'http://localhost:2000/' + product.productImages[0].path" alt="">
           <p class="price">{{product.price | priceNumber}}</p>
           <h2 class="name">{{product.name}}</h2>
           <p class="description">{{product.description}}</p>
-
-          {{product.productImages[0].path}}
         </router-link>
       </div>
     </div>

@@ -2,7 +2,7 @@
   <div>
     <h2>Editar Usuário</h2>
 
-    <form class="form-login" v-show="active">
+    <form class="form-login" v-if="active">
       <label for="name_login">Nome:</label>
       <input id="name_login" name="name_login" required="required" type="text" placeholder="Gabriel" v-model="user.name"/>
 
@@ -39,8 +39,11 @@
       <div class="button">
         <input type="submit" value="Salvar Dados" @click.prevent="updateUser()"/> 
       </div>
-           
     </form>
+
+    <div v-else>
+      <h2>Nenhum dado encontrado</h2>
+    </div>
   </div>
 </template>
 
@@ -74,8 +77,6 @@ export default {
         const dataUser = r.data.body[0];
         const addressUser = r.data.body[0].user_address[0];
 
-        console.log(dataUser)
-
         this.active = true;
         this.user.email = dataUser.email;
         this.user.name = dataUser.name;
@@ -90,7 +91,7 @@ export default {
         this.user.state = addressUser.state;
       }, (error) => {
         if (error.response.status === 400) {
-          alert('Usuário não encontrado!')
+          console.log('Usuário não encontrado!')
         }
       });
     },
@@ -128,6 +129,9 @@ export default {
     },
   },
   created() {
+    if(!this.$store.state.login) {
+      this.$router.push('/');
+    }
     this.getUser();
   }
 }

@@ -41,6 +41,9 @@ export default {
     },
   },
   created() {
+    if(!this.$store.state.login) {
+      this.$router.push('/');
+    }
     this.getMyCart();
   }
 }
