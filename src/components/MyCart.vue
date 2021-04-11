@@ -11,6 +11,10 @@
         </div>
       </div>
     </section>
+
+    <section v-else>
+      <h2>Você não efetuou nenhuma compra ainda...</h2>
+    </section>
   </div>
 </template>
 
@@ -31,7 +35,7 @@ export default {
           this.myCart = r.data.body;
       }, (error) => {
         if (error.response.status === 400) {
-          alert('Você não efetuou nenhuma compra')
+          this.myCart = false;
         }
       });
     },

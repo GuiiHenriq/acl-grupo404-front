@@ -123,6 +123,8 @@ export default {
           }
         ]
       };
+
+      console.log(dataUser)
       
       return api.post(`/user`, dataUser).then(() => {
         console.log('Criado!');
@@ -204,7 +206,8 @@ export default {
 }
 
 .alert-sucess {
-  position: absolute;
+  background: rgba(0,0,0,0.9);
+  position: fixed;
   width: 100%;
   height: 100vh;
   top: 0;

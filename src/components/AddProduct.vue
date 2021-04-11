@@ -45,7 +45,7 @@
               <h3 class="name">{{product.name}}</h3>
               <p class="description">{{product.description}}</p>
 
-              <button class="deletar" @click="deteleProduct(product.id)">DELETAR</button>
+              <button class="delete" @click="deleteProduct(product.id)">DELETAR</button>
             </div>
           </div>
         </li>
@@ -76,28 +76,31 @@ export default {
   },
   methods: {
     addProduct() {
-      /*const form = new FormData();
-      const slugUrl = this.product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w]+/g, '-').toLowerCase();
+      /*var form = new FormData();
       const photos = this.$refs.photos.files;
-
-      form.append("id", this.idUser);
-      form.append("name", this.product.name);
+      form.append("photos", photos[0]);
+      form.append("user_id", 18);
+      form.append("name", "teste4");
       form.append("active", true);
-      form.append("slug_url", slugUrl);
-      form.append("price", this.product.price);
-      for(let i = 0; i < photos.length; i++) {
-        form.append("photos",  [{"path": photos[0].name}]);
-      }
-      form.append("qty", this.product.amount);
-      form.append("sku", this.product.sku);
-      form.append("code", this.product.code);
-      form.append("description", this.product.description);
+      form.append("slug_url", "teste-produto-4");
+      form.append("price", "22.50");
+      form.append("qty", "10");
+      form.append("sku", "67546fd");
+      form.append("code", "daae545aa");
+      form.append("description", "Teste4");
 
-      let object = {};
-      form.forEach((value, key) => object[key] = value);
-      //var json = JSON.stringify(object);
-      const dataProduct = object;*/
+      var requestOptions = {
+        method: 'POST',
+        body: form,
+        redirect: 'follow'
+      };
 
+      fetch("http://localhost:2000/product", requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));*/
+
+      /*const form = new FormData();
       const slugUrl = this.product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w]+/g, '-').toLowerCase();
       const photos = this.$refs.photos.files;
 
@@ -107,16 +110,52 @@ export default {
         code: this.product.code,
         description: this.product.description,
         name: this.product.name,
-        product_images: [{"path": photos[0].name}],
         price: this.product.price,
         qty: this.product.amount,
         sku: this.product.sku,
         slug_url: slugUrl,
       }
 
-      console.log(dataProduct);
+      form.append("fields_data", dataProduct);
+      form.append("photos", photos[0]);
 
-      return api.post(`/product`, dataProduct).then(() => {
+      var requestOptions = {
+        body: form,
+        redirect: 'follow'
+      };
+
+      console.log(form)
+
+      return api.post(`/product`, requestOptions).then(() => {
+        console.log('Produto Cadastrado!');
+        this.getProductUser();
+      }, (error) => {
+        if (error.response.status === 400) {
+          alert('Falha ao cadastrar produto!')
+        }
+      });*/
+      
+      const formData = new FormData();
+      const slugUrl = this.product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w]+/g, '-').toLowerCase();
+      const photos = this.$refs.photos.files;
+
+      formData.append("photos", photos[0]);
+      formData.append("user_id", this.idUser);
+      formData.append("name", this.product.name);
+      formData.append("active", true);
+      formData.append("slug_url", slugUrl);
+      formData.append("price", this.product.price);
+      formData.append("qty", this.product.amount);
+      formData.append("sku", this.product.sku);
+      formData.append("code", this.product.code);
+      formData.append("description", this.product.description);
+
+      //let object = {};
+      //formData.forEach((value, key) => object[key] = value);
+      //var json = JSON.stringify(object);
+      //const dataProduct = object;
+
+      return api.post(`/product`, formData).then(() => {
         console.log('Produto Cadastrado!');
         this.getProductUser();
       }, (error) => {
@@ -135,7 +174,7 @@ export default {
         }
       });
     },
-    deteleProduct(idProduct) {
+    deleteProduct(idProduct) {
       const confirm = window.confirm('Deseja deletar esse produto?');
 
       if(!confirm) return; 

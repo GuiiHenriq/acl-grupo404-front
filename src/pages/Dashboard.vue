@@ -4,10 +4,11 @@
 
     <div class="content" v-if="this.$store.state.user">
       <nav>
-        <button @click="addProduct = true;mySales = false;myCart = false;editUser = false">CADASTRAR PRODUTO</button>
-        <!--<button @click="mySales = true;addProduct = false;myCart = false;editUser = false">MINHAS VENDAS</button>-->
-        <button @click="myCart = true;addProduct = false;mySales = false;editUser = false">MINHAS COMPRAS</button>
-        <button @click="editUser = true;addProduct = false;mySales = false;myCart = false">EDITAR USUÁRIO</button>
+        <button @click="addProduct = true;mySales = false;myCart = false;myAddress = false;editUser = false">CADASTRAR PRODUTO</button>
+        <!--<button @click="mySales = true;addProduct = false;myCart = false;myAddress = false;editUser = false">MINHAS VENDAS</button>-->
+        <button @click="myCart = true;addProduct = false;mySales = false;myAddress = false;editUser = false">MINHAS COMPRAS</button>
+        <button @click="myAddress = true;addProduct = false;mySales = false;myCart = false;editUser = false">MEUS ENDEREÇOS</button>
+        <button @click="editUser = true;addProduct = false;mySales = false;myCart = false;myAddress = false">EDITAR USUÁRIO</button>
         <button @click="logOut()">SAIR</button>
       </nav>
 
@@ -15,6 +16,7 @@
         <AddProduct v-show="addProduct" />
         <!--<MySales v-show="mySales" />-->
         <MyCart v-show="myCart" />
+        <MyAddress v-show="myAddress" />
         <EditUser v-show="editUser" />
       </section>
     </div>
@@ -25,6 +27,7 @@
 import AddProduct from '@/components/AddProduct';
 //import MySales from '@/components/MySales';
 import MyCart from '@/components/MyCart';
+import MyAddress from '@/components/MyAddress';
 import EditUser from '@/components/EditUser';
 
 export default {
@@ -33,6 +36,7 @@ export default {
     AddProduct,
     //MySales,
     MyCart,
+    MyAddress,
     EditUser,
   },
   data() {
@@ -40,6 +44,7 @@ export default {
       addProduct: true,
       mySales: false,
       myCart: false,
+      myAddress: false,
       editUser: false,
     };
   },

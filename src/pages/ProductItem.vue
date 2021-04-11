@@ -4,6 +4,9 @@
       <div class="product" v-for="(product, index) in dataProduct" :key="index" :data-id="product.id" :data-qty="product.qty" ref="item">
         <ul class="photos">
           <li><img class="thumbnail" src="../assets/thumbnail.jpg" alt=""></li>
+          <!--<li><img class="thumbnail" src="product.productImages[0].path" alt=""></li>-->
+
+          {{product.productImages[0].path}}
         </ul>
         <div class="info">
           <h2 class="name">{{product.name}}</h2>
@@ -30,7 +33,7 @@
             </div>
           </div>
 
-          <div v-if="userStore" class="checkbox-address">
+          <!--<div v-if="userStore" class="checkbox-address">
             <input type="radio" id="newAddress" name="newAddress" value="newAddress" v-model="addressId">
             <label for="change_address">Mudar endereço de entrega?</label>
           </div>
@@ -61,7 +64,7 @@
               <label for="state_login">Estado:</label>
               <input id="state_login" name="state_login" required="required" type="text" placeholder="SP" v-model="newAddressUser.state"/>
             </form>
-          </div>
+          </div>-->
         </div>
       </div>
     </section>
@@ -281,6 +284,7 @@ export default {
 
 .product .description {
   font-size: 1.2rem;
+  text-transform: capitalize;
 }
 
 .product .qty {
