@@ -20,7 +20,7 @@
 
           <button class="btn" @click="buyItem()">Comprar</button>
 
-          <div class="address-user">
+          <div v-if="userStore" class="address-user">
             <h3>Selecione seu Endereço</h3>
             <div v-for="(address, index) in addressUser" :key="index">
               <input type="radio" :id="address.id" :name="address.id" :value="address.id" v-model="addressId">
@@ -30,7 +30,7 @@
             </div>
           </div>
 
-          <div class="checkbox-address">
+          <div v-if="userStore" class="checkbox-address">
             <input type="radio" id="newAddress" name="newAddress" value="newAddress" v-model="addressId">
             <label for="change_address">Mudar endereço de entrega?</label>
           </div>
@@ -78,6 +78,7 @@ export default {
     return {
       checked: false,
       dataProduct: "",
+      userStore: this.$store.state.login,
       idUser: this.$store.state.user.id,
       quantity: 1,
       newAddressUser: {
@@ -144,6 +145,8 @@ export default {
       const qtyItem = this.quantity;
       const calcQty = qtyBuy - qtyItem;
 
+      if(!this.userStore) return this.$router.push('/register');
+
       if(this.addressId == 0) return alert('Escolha seu endereço');
 
       if(calcQty > 0 || calcQty == 0) {
@@ -191,7 +194,7 @@ export default {
         user_id: this.idUser,
         status_id: 1,
         user_address_id: this.addressId,
-        total: priceItem,
+        total: priceItem * this.quantity,
         products: [
             {
               product_id: idItem,
@@ -229,7 +232,11 @@ export default {
   },
   created() {
     this.getProduct();
-    this.getAddressUser();
+    if(this.$store.state.login) {
+      this.getAddressUser();
+    } else {
+      console.log('nao')
+    }
   }
 }
 </script>
@@ -345,8 +352,8 @@ pre {
 
  .quantity-toggle input {
 	border: 0;
-	border-top: 2px solid #333;
-	border-bottom: 2px solid #333;
+	border-top: 2px solid #C2185B;
+	border-bottom: 2px solid #C2185B;
 	width: 2.5rem;
 	text-align: center;
 	padding: 0 0.5rem;
@@ -354,8 +361,8 @@ pre {
 }
 
  .quantity-toggle button {
-	border: 2px solid #333;
-	padding: 0.5rem;
+	border: 2px solid #C2185B;
+	padding: 0.6rem;
 	background: #C2185B;
 	color: #fff;
 	font-size: 1rem;

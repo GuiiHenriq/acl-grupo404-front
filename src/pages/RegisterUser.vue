@@ -199,6 +199,10 @@ export default {
   font-weight: 700;
 }
 
+.form-login .link {
+  text-align: center;
+}
+
 .alert-sucess {
   position: absolute;
   width: 100%;
@@ -247,8 +251,14 @@ export default {
 /* ============= RESPONSIVE ============= */
 @media only screen and (max-width: 768px) {
   .form-login {
-    padding: 50px 0;
+    padding: 0;
+    box-shadow: none;
+    background: none;
     max-width: initial;
+  }
+
+  .form-login input {
+    margin-bottom: 35px;
   }
 }
 </style>

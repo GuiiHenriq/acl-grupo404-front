@@ -1,6 +1,6 @@
 <template>
   <div v-if="dataSale" class="success-sale">
-    <h2>Parabéns, compra efetuado com sucesso!</h2>
+    <h2>Parabéns, compra efetuada com sucesso!</h2>
 
     <h3>N° PEDIDO: <strong>{{dataSale.id}}</strong></h3>
     <h3>VALOR TOTAL: <strong>{{dataSale.total | priceNumber}}</strong></h3>

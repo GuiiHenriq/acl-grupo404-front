@@ -138,8 +138,14 @@ export default {
 /* ============= RESPONSIVE ============= */
 @media only screen and (max-width: 768px) {
   .form-login {
-    padding: 50px 0;
+    padding: 0;
+    box-shadow: none;
+    background: none;
     max-width: initial;
+  }
+
+  .form-login input {
+    margin-bottom: 35px;
   }
 }
 </style>
