@@ -2,7 +2,7 @@
   <div class="products-container">
     <h2 class="title">Lista de Produtos</h2>
 
-    <div class="products" v-show="dataProduct">
+    <div class="products" v-if="dataProduct">
       <div class="product" v-for="(product, index) in dataProduct" :key="index" v-show="product.user_id !== idUser">
         <router-link :to="{name: 'ProductItem', params: {id: product.id}}">
           <img class="thumbnail" :src="'http://localhost:2000/' + product.productImages[0].path" alt="">

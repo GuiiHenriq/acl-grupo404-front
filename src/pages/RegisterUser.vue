@@ -52,7 +52,7 @@
       </p>
     </form>
 
-    <div class="alert-sucess" v-show="active">
+    <div class="alert-sucess" v-if="active">
       <section>
         <h2>USUÁRIO CADASTRADO</h2>
         <router-link :to="{ path: '/login' }" title="Ir para Página de Cadastro">Faça o Login</router-link>

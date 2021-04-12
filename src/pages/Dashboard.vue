@@ -13,11 +13,11 @@
       </nav>
 
       <section>
-        <AddProduct v-show="addProduct" />
-        <!--<MySales v-show="mySales" />-->
-        <MyCart v-show="myCart" />
-        <MyAddress v-show="myAddress" />
-        <EditUser v-show="editUser" />
+        <AddProduct v-if="addProduct" />
+        <!--<MySales v-if="mySales" />-->
+        <MyCart v-if="myCart" />
+        <MyAddress v-if="myAddress" />
+        <EditUser v-if="editUser" />
       </section>
     </div>
   </main>

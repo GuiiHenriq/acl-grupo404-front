@@ -39,10 +39,11 @@
           <div class="product">
             <div class="photo">
               <img class="thumbnail" src="../assets/thumbnail.jpg" alt="">
+              <!--<img class="thumbnail" :src="'http://localhost:2000/' + product.productImages[0].path" alt="">-->
             </div>
             <div class="infos">
               <p class="price">{{product.price | priceNumber}}</p>
-              <h3 class="name">{{product.name}}</h3>
+              <router-link :to="{ path: `/product/${product.id}` }" title="Ir para Página do Produto"><h3 class="name">{{product.name}}</h3></router-link>
               <p class="description">{{product.description}}</p>
 
               <button class="delete" @click="deleteProduct(product.id)">DELETAR</button>
@@ -238,6 +239,12 @@ export default {
 .product .infos {
   align-self: center;
 }
+
+.product .infos h3 {
+  text-decoration: underline;
+  color: #C2185B;
+}
+
 
 .product .infos h3 {
   font-weight: 700;

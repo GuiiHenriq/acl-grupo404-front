@@ -35,7 +35,7 @@
             <label for="change_address">Mudar endereço de entrega?</label>
           </div>
 
-          <div v-show="addressId === 'newAddress'">
+          <div v-if="addressId === 'newAddress'">
             <form class="form-login">
               <label for="typeAddress_login">Tipo de Endereço:</label>
               <input id="typeAddress_login" name="typeAddress_login" required="required" type="text" placeholder="Trabalho" v-model="newAddressUser.typeAddress"/> 

@@ -8,6 +8,10 @@
 
     <router-link :to="{ path: '/dashboard' }" title="Ir para Página de Dashboard">IR PARA MEU PAINEL</router-link>
   </div>
+
+  <div v-else>
+    <h2>Você não efetuou nenhuma compra!</h2>
+  </div>
 </template>
 
 <script>
@@ -24,9 +28,9 @@ export default {
   methods: {
     getSale() {
       return api.get(`/user/${this.idUser}/orders/`).then((r) => {
-        const arr = [r.data.body];
-        const lastItem = arr[0][arr[0].length - 1];
-        this.dataSale = lastItem;
+        //const arr = [r.data.body];
+        //const lastItem = arr[0][arr[0].length - 1];
+        this.dataSale = r.data.body[0];
       }, (error) => {
         if (error.response.status === 400) {
           this.$router.push('/');

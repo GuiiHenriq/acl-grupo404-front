@@ -33,6 +33,7 @@ export default {
     getMyCart() {
       api.get(`/user/${this.idUser}/orders`).then((r) => {
           this.myCart = r.data.body;
+          console.log(r.data.body)
       }, (error) => {
         if (error.response.status === 400) {
           this.myCart = false;
