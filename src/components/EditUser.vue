@@ -15,9 +15,6 @@
       <label for="user_login">Usuário:</label>
       <input id="user_login" name="user_login" required="required" type="text" placeholder="gabriel" v-model="user.user"/>
 
-      <label for="pass_login">Senha:</label>
-      <input id="pass_login" name="pass_login" required="required" type="password" placeholder="1234" v-model="user.pass"/> 
-
       <label for="zipcode_login">Cep:</label>
       <input id="zipcode_login" name="zipcode_login" required="required" type="text" placeholder="04660-006" v-model="user.zipCode" @keyup="getCep()"/> 
 
@@ -61,7 +58,6 @@ export default {
         email: null,
         phone: null,
         user: null,
-        pass: null,
         zipCode: null,
         street: null,
         number: null,
@@ -82,7 +78,6 @@ export default {
         this.user.name = dataUser.name;
         this.user.user = dataUser.login;
         this.user.phone = dataUser.phone;
-        this.user.pass = dataUser.password;
         this.user.zipCode = addressUser.cep;
         this.user.street = addressUser.street;
         this.user.number = addressUser.number;
