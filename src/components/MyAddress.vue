@@ -172,23 +172,28 @@ export default {
       });
     },
     getCep() {
-      const zipCode = this.editAddressUser.zipCode.replace(/\D/g, "");
-      if(zipCode.length === 8) {
-        getCep(zipCode).then(r => {
-          if(this.activeEdit) {
+      if(this.activeEdit) {
+        const zipCode = this.editAddressUser.zipCode.replace(/\D/g, "");
+        if(zipCode.length === 8) {
+          getCep(zipCode).then(r => {
             this.editAddressUser.street = r.data.logradouro;
             this.editAddressUser.district = r.data.bairro;
             this.editAddressUser.city = r.data.localidade;
             this.editAddressUser.state = r.data.uf;
-          }
+          });
+        } 
+      }
 
-          if(this.activeAdd) {
+      if(this.activeAdd) {
+        const zipCode = this.addAddressUser.zipCode.replace(/\D/g, "");
+        if(zipCode.length === 8) {
+          getCep(zipCode).then(r => {
             this.addAddressUser.street = r.data.logradouro;
             this.addAddressUser.district = r.data.bairro;
             this.addAddressUser.city = r.data.localidade;
             this.addAddressUser.state = r.data.uf;
-          }
-        });
+          });
+        }
       }
     },
     changeAddress(idAddress) {
