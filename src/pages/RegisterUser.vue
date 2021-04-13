@@ -52,7 +52,7 @@
       </p>
     </form>
 
-    <div class="alert-sucess" v-if="active">
+    <div class="alert-sucess" v-show="active">
       <section>
         <h2>USUÁRIO CADASTRADO</h2>
         <router-link :to="{ path: '/login' }" title="Ir para Página de Cadastro">Faça o Login</router-link>
@@ -129,6 +129,20 @@ export default {
       return api.post(`/user`, dataUser).then(() => {
         console.log('Criado!');
         this.active = true;
+
+        this.name = null
+        this.email = null
+        this.phone = null
+        this.user = null
+        this.pass = null
+        this.typeAddress = null
+        this.zipCode = null
+        this.street = null
+        this.number = null
+        this.complement = null
+        this.district = null
+        this.city = null
+        this.state = null
       }, (error) => {
         if (error.response.status === 400) {
           alert('Falha no cadastro!')
@@ -262,6 +276,15 @@ export default {
 
   .form-login input {
     margin-bottom: 35px;
+  }
+
+  .alert-sucess section {
+    position: fixed;
+    width: 90%;
+  } 
+  
+  .alert-sucess button {
+    font-size: 18px;
   }
 }
 </style>

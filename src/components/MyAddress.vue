@@ -387,4 +387,19 @@ export default {
   grid-column: 2;
   margin-top: 10px;
 }
+
+/* ============= RESPONSIVE ============= */
+@media only screen and (max-width: 768px) {
+  .modal-change-address {
+    position: fixed;
+  }
+
+  .modal-change-address section {
+    width: 100%;
+  }
+
+  .form-login {
+    width: 80%;
+  }
+}
 </style>

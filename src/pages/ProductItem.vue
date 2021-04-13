@@ -145,7 +145,7 @@ export default {
       const qtyItem = this.quantity;
       const calcQty = qtyBuy - qtyItem;
 
-      if(!this.userStore) return this.$router.push('/register');
+      if(!this.userStore) return this.$router.push('/login');
 
       if(this.addressId == 0) return alert('Escolha seu endereço');
 

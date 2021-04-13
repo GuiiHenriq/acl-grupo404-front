@@ -260,5 +260,11 @@ export default {
     grid-template-columns: 1fr;
     grid-gap: 10px;
   }
+
+  .product .thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: none;
+  }
 }
 </style>
