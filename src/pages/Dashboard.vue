@@ -4,11 +4,13 @@
 
     <div class="content" v-if="this.$store.state.user">
       <nav>
-        <button @click="addProduct = true;mySales = false;myCart = false;myAddress = false;editUser = false">CADASTRAR PRODUTO</button>
+        <button @click="addProduct = true;myCharts = false; mySales = false;myCart = false;myAddress = false;editUser = false; MyInformation = false">CADASTRAR PRODUTO</button>
         <!--<button @click="mySales = true;addProduct = false;myCart = false;myAddress = false;editUser = false">MINHAS VENDAS</button>-->
-        <button @click="myCart = true;addProduct = false;mySales = false;myAddress = false;editUser = false">MINHAS COMPRAS</button>
-        <button @click="myAddress = true;addProduct = false;mySales = false;myCart = false;editUser = false">MEUS ENDEREÇOS</button>
-        <button @click="editUser = true;addProduct = false;mySales = false;myCart = false;myAddress = false">EDITAR USUÁRIO</button>
+        <button @click="myCart = true;myCharts = false; addProduct = false;mySales = false;myAddress = false;editUser = false; MyInformation = false">MINHAS COMPRAS</button>
+        <button @click="myAddress = true;myCharts = false; addProduct = false;mySales = false;myCart = false;editUser = false; MyInformation = false">MEUS ENDEREÇOS</button>
+        <button @click="myCharts = true;addProduct = false;mySales = false;myAddress = false;editUser = false; MyInformation = false">GRÁFICOS DE VENDA</button>
+        <button @click="editUser = true;myCharts = false; addProduct = false;mySales = false;myCart = false;myAddress = false; MyInformation = false">EDITAR USUÁRIO</button>
+        <button @click="myInformation = true;addProduct = false;mySales = false;myAddress = false;myCart = false; editUser = false; myCharts = false">CÓDIGO DE CONDUTA</button>
         <button @click="logOut()">SAIR</button>
       </nav>
 
@@ -16,7 +18,9 @@
         <AddProduct v-if="addProduct" />
         <!--<MySales v-if="mySales" />-->
         <MyCart v-if="myCart" />
+        <MyCharts v-if="myCharts" />
         <MyAddress v-if="myAddress" />
+        <MyInformation v-if="myInformation" />
         <EditUser v-if="editUser" />
       </section>
     </div>
@@ -27,7 +31,9 @@
 import AddProduct from '@/components/AddProduct';
 //import MySales from '@/components/MySales';
 import MyCart from '@/components/MyCart';
+import MyCharts from '@/components/MyCharts';
 import MyAddress from '@/components/MyAddress';
+import MyInformation from '@/components/MyInformation';
 import EditUser from '@/components/EditUser';
 
 export default {
@@ -36,7 +42,9 @@ export default {
     AddProduct,
     //MySales,
     MyCart,
+    MyCharts,
     MyAddress,
+    MyInformation,
     EditUser,
   },
   data() {
@@ -44,7 +52,9 @@ export default {
       addProduct: true,
       mySales: false,
       myCart: false,
+      myCharts: false,
       myAddress: false,
+      myInformation: false,
       editUser: false,
     };
   },
@@ -65,6 +75,11 @@ export default {
 </script>
 
 <style>
+
+body {
+  background-color:rgb(247, 246, 243);
+}
+
 .dashboard h2 {
   font-size: 36px;
   text-align: center;
