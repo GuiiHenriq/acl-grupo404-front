@@ -28,9 +28,11 @@ export default {
   methods: {
     getSale() {
       return api.get(`/user/${this.idUser}/orders/`).then((r) => {
-        //const arr = [r.data.body];
-        //const lastItem = arr[0][arr[0].length - 1];
-        this.dataSale = r.data.body[0];
+        const arr = [r.data.body];
+        const lastItem = arr[0][arr[0].length - 1];
+        this.dataSale = lastItem;
+
+        //this.dataSale = r.data.body[0];
       }, (error) => {
         if (error.response.status === 400) {
           this.$router.push('/');

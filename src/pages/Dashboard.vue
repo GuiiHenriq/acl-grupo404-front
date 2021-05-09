@@ -4,13 +4,13 @@
 
     <div class="content" v-if="this.$store.state.user">
       <nav>
-        <button @click="addProduct = true;myCharts = false; mySales = false;myCart = false;myAddress = false;editUser = false; MyInformation = false">CADASTRAR PRODUTO</button>
+        <button @click="addProduct = true;myCharts = false;mySales = false;myCart = false;myAddress = false;editUser = false;myInformation = false">CADASTRAR PRODUTO</button>
         <!--<button @click="mySales = true;addProduct = false;myCart = false;myAddress = false;editUser = false">MINHAS VENDAS</button>-->
-        <button @click="myCart = true;myCharts = false; addProduct = false;mySales = false;myAddress = false;editUser = false; MyInformation = false">MINHAS COMPRAS</button>
-        <button @click="myAddress = true;myCharts = false; addProduct = false;mySales = false;myCart = false;editUser = false; MyInformation = false">MEUS ENDEREÇOS</button>
-        <button @click="myCharts = true;addProduct = false;mySales = false;myAddress = false;editUser = false; MyInformation = false">GRÁFICOS DE VENDA</button>
-        <button @click="editUser = true;myCharts = false; addProduct = false;mySales = false;myCart = false;myAddress = false; MyInformation = false">EDITAR USUÁRIO</button>
-        <button @click="myInformation = true;addProduct = false;mySales = false;myAddress = false;myCart = false; editUser = false; myCharts = false">CÓDIGO DE CONDUTA</button>
+        <button @click="myCart = true;myCharts = false;addProduct = false;mySales = false;myAddress = false;editUser = false;myInformation = false">MINHAS COMPRAS</button>
+        <button @click="myAddress = true;myCharts = false;addProduct = false;mySales = false;myCart = false;editUser = false;myInformation = false;">MEUS ENDEREÇOS</button>
+        <button @click="myCharts = true;myCart = false;addProduct = false;mySales = false;myAddress = false;editUser = false;myInformation = false">GRÁFICOS DE VENDA</button>
+        <button @click="editUser = true;myCharts = false;addProduct = false;mySales = false;myCart = false;myAddress = false;myInformation = false">EDITAR USUÁRIO</button>
+        <button @click="myInformation = true;addProduct = false;mySales = false;myAddress = false;myCart = false;editUser = false;myCharts = false">CÓDIGO DE CONDUTA</button>
         <button @click="logOut()">SAIR</button>
       </nav>
 
