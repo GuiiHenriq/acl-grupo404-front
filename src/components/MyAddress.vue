@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { api, getCep } from '@/services.js';
+import { apiToken, getCep } from '@/services.js';
 
 export default {
   name: "MyAddress",
@@ -103,6 +103,7 @@ export default {
       activeEdit: false,
       activeAdd: false,
       idUser: this.$store.state.user.id,
+      tokenUser: this.$store.state.user.token,
       addressUser: null,
       editAddressUser: {
         typeAddress: null,
@@ -128,7 +129,7 @@ export default {
   },
   methods: {
     getAddressUser() {
-      return api.get(`/user/${this.idUser}`).then((r) => {
+      return apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
         this.addressUser = r.data.body[0].user_address;
       }, (error) => {
         if (error.response.status === 400) {
@@ -141,7 +142,7 @@ export default {
 
       if(!confirm) return; 
       
-      return api.delete(`/user/address/${idAddress}`).then(() => {
+      return apiToken.delete(`/user/address/${idAddress}`, this.tokenUser).then(() => {
           this.getAddressUser();
       }, (error) => {
         if (error.response.status === 400) {
@@ -154,7 +155,7 @@ export default {
         return user_address.id === idAddressUnique;
       }
 
-      return api.get(`/user/${this.idUser}`).then((r) => {
+      return apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
         const obj = r.data.body[0].user_address.find(findIdAddressUnique);
 
         this.editAddressUser.typeAddress = obj.type_name,
@@ -209,7 +210,7 @@ export default {
         state: this.editAddressUser.state,
       }
 
-      return api.put(`/user/address/${idAddress}`, addressUser).then(() => {
+      return apiToken.put(`/user/address/${idAddress}`, addressUser, this.tokenUser).then(() => {
           this.getAddressUser();
           this.activeEdit = false;
       }, (error) => {
@@ -233,7 +234,7 @@ export default {
 
       console.log(addressUser)
 
-      return api.post(`/user/address`, addressUser).then(() => {
+      return apiToken.post(`/user/address`, addressUser, this.tokenUser).then(() => {
         this.getAddressUser();
         this.activeAdd = false;
       }, (error) => {

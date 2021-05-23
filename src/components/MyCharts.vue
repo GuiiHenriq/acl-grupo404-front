@@ -15,17 +15,19 @@
 <script>
 import Chart from "chart.js/auto";
 import html2pdf from "html2pdf.js";
+import { apiToken } from '@/services.js';
 
 export default {
   name: "MyCharts",
   data() {
     return {
       idUser: this.$store.state.user.id,
+      tokenUser: this.$store.state.user.token,
     };
   },
   methods: {
     salesCharts() {
-      fetch("http://localhost:2000/chart")
+      /*fetch("http://localhost:2000/chart")
       .then((result) => result.json())
       .then((object) => {
         const body = object.body;
@@ -48,6 +50,33 @@ export default {
         };
 
         new Chart(document.getElementById("salesMonth"), config);
+      });*/
+
+      apiToken.get(`/chart`, this.tokenUser).then((r) => {
+        const body = r.data.body;
+        const data = {
+          labels: body.meses,
+          datasets: [
+            {
+              label: "Venda Mensal",
+              backgroundColor: "rgb(255, 99, 132)",
+              borderColor: "rgb(255, 99, 132)",
+              data: body.data,
+            },
+          ],
+        };
+
+        const config = {
+          type: "line",
+          data,
+          options: {},
+        };
+
+        new Chart(document.getElementById("salesMonth"), config);
+      }, (error) => {
+        if (error.response.status === 400) {
+          console.log('Falha ao encontrar gráfico!')
+        }
       });
     },
     savePDF() {

@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { api, getCep } from '@/services.js'
+import { apiToken, getCep } from '@/services.js'
 
 export default {
   name: "EditUser",
@@ -53,6 +53,7 @@ export default {
     return {
       active: false,
       idUser: this.$store.state.user.id,
+      tokenUser: this.$store.state.user.token,
       user: {
         name: null,
         email: null,
@@ -69,7 +70,7 @@ export default {
   },
   methods: {
     getUser() {
-      return api.get(`/user/${this.idUser}`).then((r) => {
+      return apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
         const dataUser = r.data.body[0];
         const addressUser = r.data.body[0].user_address[0];
 
@@ -112,7 +113,7 @@ export default {
 
       console.log(dataUser)
 
-      return api.put(`/user/${this.idUser}`, dataUser).then(() => {
+      return apiToken.put(`/user/${this.idUser}`, dataUser, this.tokenUser).then(() => {
         console.log('Dados alterados!');
         this.$store.commit("UPDATE_USUARIO", dataUser);
         window.localStorage.setItem('user', JSON.stringify(dataUser));

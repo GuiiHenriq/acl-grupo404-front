@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { api, getCep } from '@/services.js'
+import { api, apiToken, getCep } from '@/services.js'
 
 export default {
   name: "ProductItem",
@@ -80,6 +80,7 @@ export default {
       dataProduct: "",
       userStore: this.$store.state.login,
       idUser: this.$store.state.user.id,
+      tokenUser: this.$store.state.user.token,
       quantity: 1,
       newAddressUser: {
         typeAddress: null,
@@ -111,7 +112,7 @@ export default {
         this.dataProduct = r.data.body;
       }, (error) => {
         if (error.response.status === 400) {
-          alert('Falha ao cadastrar produto!')
+          alert('Falha ao localizar produto!')
         }
       });
     },
@@ -130,8 +131,8 @@ export default {
 
       console.log(addressUser);
 
-      return api.post(`/user/address`, addressUser).then(() => {
-        console.log('Endereço Cadastrado')
+      return apiToken.post(`/user/address`, addressUser, this.tokenUser).then(() => {
+        console.log('Endereço Cadastrado');
       }, (error) => {
         if (error.response.status === 400) {
           alert('Falha ao cadastrar produto!')
@@ -178,7 +179,7 @@ export default {
       }
     },
     getAddressUser() {
-      return api.get(`/user/${this.idUser}`).then((r) => {
+      return apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
         this.addressUser = r.data.body[0].user_address;
       }, (error) => {
         if (error.response.status === 400) {
@@ -205,7 +206,7 @@ export default {
 
       console.log(dataItem);
 
-      return api.post(`/order`, dataItem).then(() => {
+      return apiToken.post(`/order`, dataItem, this.tokenUser).then(() => {
         console.log('COMPRADO!');
         this.$router.push('/success');
       }, (error) => {
@@ -221,7 +222,7 @@ export default {
         qty: qtyValue
       }
 
-      return api.put(`/product/${idItem}`, qtyItem).then(() => {
+      return apiToken.put(`/product/${idItem}`, qtyItem, this.tokenUser).then(() => {
         console.log('Quantidade Atualizado');
       }, (error) => {
         if (error.response.status === 400) {

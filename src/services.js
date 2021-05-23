@@ -19,6 +19,21 @@ export const api = {
   },
 };
 
+export const apiToken = {
+  get(endpoint, token) {
+    return axiosInstance.get(endpoint, { headers: { "x-access-token": token } });
+  },
+  post(endpoint, body, token) {
+    return axiosInstance.post(endpoint, body, { headers: { "x-access-token": token } });
+  },
+  put(endpoint, body, token) {
+    return axiosInstance.put(endpoint, body, { headers: { "x-access-token": token } });
+  },
+  delete(endpoint, token) {
+    return axiosInstance.delete(endpoint, { headers: { "x-access-token": token } });
+  },
+};
+
 export function getCep(cep) {
   return axios.get(`https://viacep.com.br/ws/${cep}/json/`);
 }

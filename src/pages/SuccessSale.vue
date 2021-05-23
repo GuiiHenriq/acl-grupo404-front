@@ -15,19 +15,20 @@
 </template>
 
 <script>
-import { api } from '@/services.js'
+import { apiToken } from '@/services.js'
 
 export default {
   name: "SuccessSale",
   data() {
     return {
       idUser: this.$store.state.user.id,
+      tokenUser: this.$store.state.user.token,
       dataSale: null,
     };
   },
   methods: {
     getSale() {
-      return api.get(`/user/${this.idUser}/orders/`).then((r) => {
+      return apiToken.get(`/user/${this.idUser}/orders/`, this.tokenUser).then((r) => {
         const arr = [r.data.body];
         const lastItem = arr[0][arr[0].length - 1];
         this.dataSale = lastItem;

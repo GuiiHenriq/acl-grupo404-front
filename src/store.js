@@ -14,6 +14,7 @@ export default new Vuex.Store({
       phone: "",
       login: "",
       password: "",
+      token: "",
       enabled: 1
     },
   },
@@ -29,12 +30,12 @@ export default new Vuex.Store({
     getUsuario(context, payload) {
       return api.post(`/user/login`, payload).then(r => {
         if(r.data.login) {
-          console.log('Logado!');
           context.commit("UPDATE_USUARIO", r.data);
           context.commit("UPDATE_LOGIN", true);
           window.localStorage.setItem('user', JSON.stringify(r.data));
         } else {
-          console.log('Usuário não encontrado!');
+          alert('Usuário não encontrado!\nEmail ou senha incorretos');
+          return this.$router.push('/login');
         }
       });
     },

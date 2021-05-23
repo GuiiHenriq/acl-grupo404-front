@@ -19,21 +19,21 @@
 </template>
 
 <script>
-import { api } from '@/services.js'
+import { apiToken } from '@/services.js'
 
 export default {
   name: "MyCart",
   data() {
     return {
       idUser: this.$store.state.user.id,
+      tokenUser: this.$store.state.user.token,
       myCart: null,
     };
   },
   methods: {
     getMyCart() {
-      api.get(`/user/${this.idUser}/orders`).then((r) => {
+      apiToken.get(`/user/${this.idUser}/orders`, this.tokenUser).then((r) => {
           this.myCart = r.data.body;
-          console.log(r.data.body)
       }, (error) => {
         if (error.response.status === 400) {
           this.myCart = false;

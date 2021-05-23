@@ -12,6 +12,10 @@
         </router-link>
       </div>
     </div>
+
+    <div v-else>
+      <h3>Nenhum produto encontrado!</h3>
+    </div>
   </div>
 </template>
 
@@ -30,7 +34,6 @@ export default {
     getProducts() {
       return api.get(`/product`).then((r) => {
         this.dataProduct = r.data.body.items;
-        console.log(this.dataProduct)
       }, (error) => {
         if (error.response.status === 400) {
           alert('Falha ao cadastrar produto!')

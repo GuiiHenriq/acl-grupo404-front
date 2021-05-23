@@ -12,6 +12,11 @@
         <label for="pass_login">Senha:</label>
         <input id="pass_login" name="pass_login" required="required" type="password" placeholder="1234" v-model="pass"/> 
       </p>
+
+      <!--<p class="msg-error">
+        Usuário não encontrado<br>
+        Email ou senha incorretos
+      </p>-->
            
       <p> 
         <input type="submit" value="Logar" @click.prevent="loginUser()"/> 
@@ -26,7 +31,6 @@
 </template>
 
 <script>
-//import { api } from '@/services.js'
 
 export default {
   name: 'LoginUser',
@@ -52,22 +56,6 @@ export default {
       } catch(error){
         console.log(error);
       }
-      
-      /*return api.post(`/user/login`, dataUser).then((r) => {
-        const dataUser = {
-          id: r.data.id,
-          name: r.data.name,
-          email: r.data.email,
-        };
-
-        if(r.data.login) {
-          console.log('Logado!')
-          this.$router.push({ name: 'Dashboard', params: { data: dataUser } })
-          window.localStorage.setItem('user', JSON.stringify(dataUser));
-        } else {
-          console.log('Usuário não encontrado!');
-        }
-      });*/
     }
   },
   created() {
@@ -132,6 +120,13 @@ export default {
 
 .form-login a {
   text-decoration: underline;
+  font-weight: 700;
+}
+
+.msg-error {
+  text-align: center;
+  margin: 10px 0;
+  color: #d50000;
   font-weight: 700;
 }
 

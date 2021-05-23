@@ -59,13 +59,14 @@
 </template>
 
 <script>
-import { api } from '@/services.js'
+import { apiToken } from '@/services.js'
 
 export default {
   name: "AddProduct",
   data() {
     return {
       idUser: this.$store.state.user.id,
+      tokenUser: this.$store.state.user.token,
       product: {
         name: null,
         price: null,
@@ -97,7 +98,7 @@ export default {
       formData.append("code", this.product.code);
       formData.append("description", this.product.description);
 
-      return api.post(`/product`, formData).then(() => {
+      return apiToken.post(`/product`, formData, this.tokenUser).then(() => {
         console.log('Produto Cadastrado!');
         this.getProductUser();
       }, (error) => {
@@ -111,7 +112,7 @@ export default {
       //var json = JSON.stringify(object);
     },
     getProductUser() {
-      return api.get(`/user/${this.idUser}`).then((r) => {
+      return apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
         if(r.data.body[0].products.lenght < 0) return;
         this.userProduct = r.data.body[0].products;
       }, (error) => {
@@ -125,7 +126,7 @@ export default {
 
       if(!confirm) return; 
       
-      return api.delete(`/product/${idProduct}`).then(() => {
+      return apiToken.delete(`/product/${idProduct}`, this.tokenUser).then(() => {
           this.getProductUser();
       }, (error) => {
         if (error.response.status === 400) {
