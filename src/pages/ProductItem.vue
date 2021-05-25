@@ -3,7 +3,7 @@
     <section v-if="dataProduct">
       <div class="product" v-for="(product, index) in dataProduct" :key="index" :data-id="product.id" :data-qty="product.qty" ref="item">
         <ul class="photos">
-          <li><img class="thumbnail" :src="'http://localhost:2000/' + product.productImages[0].path" alt=""></li>
+          <li><img class="thumbnail" :src="'http://18.229.144.246:2000/' + product.productImages[0].path" alt=""></li>
         </ul>
         <div class="info">
           <h2 class="name">{{product.name}}</h2>

@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     salesCharts() {
-      /*fetch("http://localhost:2000/chart")
+      /*fetch("http://18.229.144.246:2000/chart")
       .then((result) => result.json())
       .then((object) => {
         const body = object.body;
