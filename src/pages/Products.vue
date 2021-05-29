@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div v-else>
+    <div class="error" v-else>
       <h3>Nenhum produto encontrado!</h3>
     </div>
   </div>
@@ -109,6 +109,13 @@ export default {
 
 .product .description {
   text-transform: capitalize;
+}
+
+.error {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 50px;
 }
 
 /* ============= RESPONSIVE ============= */
