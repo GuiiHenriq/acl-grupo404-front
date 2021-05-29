@@ -1,5 +1,9 @@
 <template>
   <div>
+    <section class="loading" v-show="showLoad">
+      <div class="loader">Loading...</div>
+    </section>
+
     <h2>Editar Usuário</h2>
 
     <form class="form-login" v-if="active">
@@ -51,6 +55,7 @@ export default {
   name: "EditUser",
   data() {
     return {
+      showLoad: false,
       active: false,
       idUser: this.$store.state.user.id,
       tokenUser: this.$store.state.user.token,
@@ -69,27 +74,32 @@ export default {
     };
   },
   methods: {
-    getUser() {
-      return apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
-        const dataUser = r.data.body[0];
-        const addressUser = r.data.body[0].user_address[0];
+    getUser: async function() {
+      this.showLoad = true;
 
-        this.active = true;
-        this.user.email = dataUser.email;
-        this.user.name = dataUser.name;
-        this.user.user = dataUser.login;
-        this.user.phone = dataUser.phone;
-        this.user.zipCode = addressUser.cep;
-        this.user.street = addressUser.street;
-        this.user.number = addressUser.number;
-        this.user.district = addressUser.district;
-        this.user.city = addressUser.city;
-        this.user.state = addressUser.state;
-      }, (error) => {
-        if (error.response.status === 400) {
-          console.log('Usuário não encontrado!')
-        }
-      });
+      try {
+        apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
+          const dataUser = r.data.body[0];
+          const addressUser = r.data.body[0].user_address[0];
+
+          this.active = true;
+          this.user.email = dataUser.email;
+          this.user.name = dataUser.name;
+          this.user.user = dataUser.login;
+          this.user.phone = dataUser.phone;
+          this.user.zipCode = addressUser.cep;
+          this.user.street = addressUser.street;
+          this.user.number = addressUser.number;
+          this.user.district = addressUser.district;
+          this.user.city = addressUser.city;
+          this.user.state = addressUser.state;
+        });
+      } catch(error) {
+        alert('Falha ao encontrar usuário...');
+      } finally {
+        this.showLoad = false;
+      }
+      
     },
     getCep() {
       const zipCode = this.user.zipCode.replace(/\D/g, "");
@@ -102,7 +112,7 @@ export default {
         })
       }
     },
-    updateUser() {
+    updateUser: async function() {
       const dataUser = {
         id: this.idUser,
         name: this.user.name,
@@ -113,15 +123,20 @@ export default {
 
       console.log(dataUser)
 
-      return apiToken.put(`/user/${this.idUser}`, dataUser, this.tokenUser).then(() => {
-        console.log('Dados alterados!');
-        this.$store.commit("UPDATE_USUARIO", dataUser);
-        window.localStorage.setItem('user', JSON.stringify(dataUser));
-      }, (error) => {
-        if (error.response.status === 400) {
-          alert('Falha ao atualizar dados!')
-        }
-      });
+      this.showLoad = true;
+
+      try {
+        apiToken.put(`/user/${this.idUser}`, dataUser, this.tokenUser).then(() => {
+          console.log('Dados alterados!');
+          this.$store.commit("UPDATE_USUARIO", dataUser);
+          window.localStorage.setItem('user', JSON.stringify(dataUser));
+        });
+      } catch(error) {
+        alert('Falha ao atualizar dados...');
+      } finally {
+        this.showLoad = false;
+      }
+      
     },
   },
   created() {
@@ -134,6 +149,8 @@ export default {
 </script>
 
 <style scoped>
+@import '../assets/styles/loader.scss';
+
 .content {
   display: flex;
   justify-content: center;

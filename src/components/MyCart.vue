@@ -1,5 +1,9 @@
 <template>
   <div>
+    <section class="loading" v-show="showLoad">
+      <div class="loader">Loading...</div>
+    </section>
+
     <h2>Minhas Compras</h2>
 
     <section v-if="myCart">
@@ -25,20 +29,25 @@ export default {
   name: "MyCart",
   data() {
     return {
+      showLoad: false,
       idUser: this.$store.state.user.id,
       tokenUser: this.$store.state.user.token,
       myCart: null,
     };
   },
   methods: {
-    getMyCart() {
-      apiToken.get(`/user/${this.idUser}/orders`, this.tokenUser).then((r) => {
+    getMyCart: async function() {
+      this.showLoad = true;
+
+      try {
+        apiToken.get(`/user/${this.idUser}/orders`, this.tokenUser).then((r) => {
           this.myCart = r.data.body;
-      }, (error) => {
-        if (error.response.status === 400) {
-          this.myCart = false;
-        }
-      });
+        });
+      } catch(error) {
+        this.myCart = false;
+      } finally {
+        this.showLoad = false;
+      }  
     },
   },
   created() {
@@ -51,6 +60,8 @@ export default {
 </script>
 
 <style scoped>
+@import '../assets/styles/loader.scss';
+
 .content {
   display: flex;
   justify-content: center;

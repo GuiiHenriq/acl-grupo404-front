@@ -1,5 +1,9 @@
 <template>
   <div class="products-container">
+    <section class="loading" v-show="showLoad">
+      <div class="loader">Loading...</div>
+    </section>
+
     <section v-if="dataProduct">
       <div class="product" v-for="(product, index) in dataProduct" :key="index" :data-id="product.id" :data-qty="product.qty" ref="item">
         <ul class="photos">
@@ -29,39 +33,6 @@
               <p>{{address.city}}/{{address.state}}</p>
             </div>
           </div>
-
-          <!--<div v-if="userStore" class="checkbox-address">
-            <input type="radio" id="newAddress" name="newAddress" value="newAddress" v-model="addressId">
-            <label for="change_address">Mudar endereço de entrega?</label>
-          </div>
-
-          <div v-if="addressId === 'newAddress'">
-            <form class="form-login">
-              <label for="typeAddress_login">Tipo de Endereço:</label>
-              <input id="typeAddress_login" name="typeAddress_login" required="required" type="text" placeholder="Trabalho" v-model="newAddressUser.typeAddress"/> 
-
-              <label for="zipcode_login">Cep:</label>
-              <input id="zipcode_login" name="zipcode_login" required="required" type="number" placeholder="04660-006" v-model="newAddressUser.zipCode" @keyup="getCep()"/> 
-
-              <label for="street_login">Rua:</label>
-              <input id="street_login" name="street_login" required="required" type="text" placeholder="Avenida Interlagos" v-model="newAddressUser.street"/> 
-
-              <label for="number_login">Numero:</label>
-              <input id="number_login" name="number_login" required="required" type="text" placeholder="3172" v-model="newAddressUser.number"/> 
-
-              <label for="complement_login">Complemento:</label>
-              <input id="complement_login" name="complement_login" required="required" type="text" placeholder="Ap 35" v-model="newAddressUser.complement"/>
-
-              <label for="district_login">Bairro:</label>
-              <input id="district_login" name="district_login" required="required" type="text" placeholder="Interlagos" v-model="newAddressUser.district"/> 
-
-              <label for="city_login">Cidade:</label>
-              <input id="city_login" name="city_login" required="required" type="text" placeholder="São Paulo" v-model="newAddressUser.city"/> 
-
-              <label for="state_login">Estado:</label>
-              <input id="state_login" name="state_login" required="required" type="text" placeholder="SP" v-model="newAddressUser.state"/>
-            </form>
-          </div>-->
         </div>
       </div>
     </section>
@@ -76,6 +47,7 @@ export default {
   props: ["id"],
   data() {
     return {
+      showLoad: false,
       checked: false,
       dataProduct: "",
       userStore: this.$store.state.login,
@@ -107,16 +79,20 @@ export default {
         this.quantity--;
       }
     },
-    getProduct() {
-      return api.get(`/product/${this.id}`).then((r) => {
-        this.dataProduct = r.data.body;
-      }, (error) => {
-        if (error.response.status === 400) {
-          alert('Falha ao localizar produto!')
-        }
-      });
+    getProduct: async function() {
+      this.showLoad = true;
+
+      try {
+        api.get(`/product/${this.id}`).then((r) => {
+          this.dataProduct = r.data.body;
+        });
+      } catch(error) {
+        alert('Falha ao localizar Produto...');
+      } finally {
+        this.showLoad = false;
+      }
     },
-    changeAddress() {
+    changeAddress: async function() {
       const addressUser = {
         user_id: this.idUser,
         type_name: this.newAddressUser.zipCode,
@@ -129,15 +105,17 @@ export default {
         state: this.newAddressUser.state,
       }
 
-      console.log(addressUser);
+      this.showLoad = true;
 
-      return apiToken.post(`/user/address`, addressUser, this.tokenUser).then(() => {
-        console.log('Endereço Cadastrado');
-      }, (error) => {
-        if (error.response.status === 400) {
-          alert('Falha ao cadastrar produto!')
-        }
-      });
+      try {
+        apiToken.post(`/user/address`, addressUser, this.tokenUser).then(() => {
+          alert('Endereço Cadastrado');
+        });
+      } catch(error) {
+        alert('Falha ao cadastrar Endereço...');
+      } finally {
+        this.showLoad = false;
+      }
     },
     buyItem() {
       //const dataProduct = this.dataProduct;
@@ -178,16 +156,20 @@ export default {
         })
       }
     },
-    getAddressUser() {
-      return apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
-        this.addressUser = r.data.body[0].user_address;
-      }, (error) => {
-        if (error.response.status === 400) {
-          alert('Falha ao encontrar usuário!')
-        }
-      });
+    getAddressUser: async function() {
+      this.showLoad = true;
+
+      try {
+        apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
+          this.addressUser = r.data.body[0].user_address;
+        });
+      } catch(error) {
+        alert('Falha ao localizar endereço...');
+      } finally {
+        this.showLoad = false;
+      }
     },
-    dataItem() {
+    dataItem: async function() {
       const priceItem = this.$refs.price[0].dataset.price;
       const idItem = this.$refs.item[0].dataset.id;
 
@@ -206,29 +188,37 @@ export default {
 
       console.log(dataItem);
 
-      return apiToken.post(`/order`, dataItem, this.tokenUser).then(() => {
-        console.log('COMPRADO!');
-        this.$router.push('/success');
-      }, (error) => {
-        if (error.response.status === 400) {
-          alert('Falha ao encontrar usuário!!')
-        }
-      });
+      this.showLoad = true;
+
+      try {
+        apiToken.post(`/order`, dataItem, this.tokenUser).then(() => {
+          console.log('COMPRADO!');
+          this.$router.push('/success');
+        });
+      } catch(error) {
+        alert('Falha ao comprar produto...');
+      } finally {
+        this.showLoad = false;
+      }
     },
-    updateQty(qtyValue) {
+    updateQty: async function(qtyValue) {
       const idItem = this.$refs.item[0].dataset.id;
 
       const qtyItem = {
         qty: qtyValue
       }
 
-      return apiToken.put(`/product/${idItem}`, qtyItem, this.tokenUser).then(() => {
-        console.log('Quantidade Atualizado');
-      }, (error) => {
-        if (error.response.status === 400) {
-          alert('Falha ao encontrar produto!')
-        }
-      });
+      this.showLoad = true;
+
+      try {
+        apiToken.put(`/product/${idItem}`, qtyItem, this.tokenUser).then(() => {
+          console.log('Quantidade Atualizado');
+        });
+      } catch(error) {
+        alert('Falha ao atualizar quantidade...');
+      } finally {
+        this.showLoad = false;
+      }
     }
   },
   created() {
@@ -241,6 +231,8 @@ export default {
 </script>
 
 <style scoped>
+@import '../assets/styles/loader.scss';
+
 .products-container {
   width: 100%;
   display: flex;

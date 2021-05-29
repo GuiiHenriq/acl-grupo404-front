@@ -1,5 +1,9 @@
 <template>
   <div class="products-container">
+    <section class="loading" v-show="showLoad">
+      <div class="loader">Loading...</div>
+    </section>
+
     <h2 class="title">Lista de Produtos</h2>
 
     <div class="products" v-if="dataProduct">
@@ -26,19 +30,24 @@ export default {
   name: "Products",
   data() {
     return {
+      showLoad: false,
       idUser: this.$store.state.user.id,
       dataProduct: "",
     };
   },
   methods: {
-    getProducts() {
-      return api.get(`/product`).then((r) => {
-        this.dataProduct = r.data.body.items;
-      }, (error) => {
-        if (error.response.status === 400) {
-          alert('Falha ao cadastrar produto!')
-        }
-      });
+    getProducts: async function() {
+      this.showLoad = true;
+
+      try {
+        await api.get(`/product`).then((r) => {
+          this.dataProduct = r.data.body.items;
+        });
+      } catch(error) {
+        alert('Falha ao localizar Produtos...');
+      } finally {
+        this.showLoad = false;
+      }
     }
   },
   created() {
@@ -48,6 +57,8 @@ export default {
 </script>
 
 <style scoped>
+@import '../assets/styles/loader.scss';
+
 .products-container {
   width: 100%;
   display: flex;

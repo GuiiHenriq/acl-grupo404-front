@@ -1,5 +1,9 @@
 <template>
   <div>
+    <section class="loading" v-show="showLoad">
+      <div class="loader">Loading...</div>
+    </section>
+
     <h2>Gráficos</h2>
 
     <div class="charts">
@@ -21,12 +25,13 @@ export default {
   name: "MyCharts",
   data() {
     return {
+      showLoad: false,
       idUser: this.$store.state.user.id,
       tokenUser: this.$store.state.user.token,
     };
   },
   methods: {
-    salesCharts() {
+    salesCharts: async function() {
       /*fetch("http://18.229.144.246:2000/chart")
       .then((result) => result.json())
       .then((object) => {
@@ -51,33 +56,37 @@ export default {
 
         new Chart(document.getElementById("salesMonth"), config);
       });*/
+      
+      this.showLoad = true;
 
-      apiToken.get(`/chart`, this.tokenUser).then((r) => {
-        const body = r.data.body;
-        const data = {
-          labels: body.meses,
-          datasets: [
-            {
-              label: "Venda Mensal",
-              backgroundColor: "rgb(255, 99, 132)",
-              borderColor: "rgb(255, 99, 132)",
-              data: body.data,
-            },
-          ],
-        };
+      try {
+        apiToken.get(`/chart`, this.tokenUser).then((r) => {
+          const body = r.data.body;
+          const data = {
+            labels: body.meses,
+            datasets: [
+              {
+                label: "Venda Mensal",
+                backgroundColor: "rgb(255, 99, 132)",
+                borderColor: "rgb(255, 99, 132)",
+                data: body.data,
+              },
+            ],
+          };
 
-        const config = {
-          type: "line",
-          data,
-          options: {},
-        };
+          const config = {
+            type: "line",
+            data,
+            options: {},
+          };
 
-        new Chart(document.getElementById("salesMonth"), config);
-      }, (error) => {
-        if (error.response.status === 400) {
-          console.log('Falha ao encontrar gráfico!')
-        }
-      });
+          new Chart(document.getElementById("salesMonth"), config);
+        });
+      } catch(error) {
+        alert('Falha ao localizar dados...');
+      } finally {
+        this.showLoad = false;
+      }
     },
     savePDF() {
       const element = document.getElementById('salesMonth');
@@ -103,6 +112,8 @@ export default {
 };
 </script>
 <style scoped>
+@import '../assets/styles/loader.scss';
+
 .content {
   display: flex;
   justify-content: center;

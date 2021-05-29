@@ -1,5 +1,9 @@
 <template>
   <div class="content">
+    <section class="loading" v-show="showLoad">
+      <div class="loader">Loading...</div>
+    </section>
+
     <form class="form-login">
       <h2>Registro</h2>
 
@@ -69,6 +73,7 @@ export default {
   name: 'RegisterUser',
   data() {
     return {
+      showLoad: false,
       active: false,
       name: null,
       email: null,
@@ -97,7 +102,7 @@ export default {
         })
       }
     },
-    createUser() {
+    createUser: async function() {
       if(this.name == null || this.name.length < 3) return alert('Nome inválido!');
       if(this.email == null) return alert('E-mail inválido');
       if(this.phone == null) return alert('Telefone inválido');
@@ -124,30 +129,31 @@ export default {
         ]
       };
 
-      console.log(dataUser)
+      this.showLoad = true;
       
-      return api.post(`/user`, dataUser).then(() => {
-        console.log('Criado!');
-        this.active = true;
+      try {
+        api.post(`/user`, dataUser).then(() => {
+          this.active = true;
 
-        this.name = null
-        this.email = null
-        this.phone = null
-        this.user = null
-        this.pass = null
-        this.typeAddress = null
-        this.zipCode = null
-        this.street = null
-        this.number = null
-        this.complement = null
-        this.district = null
-        this.city = null
-        this.state = null
-      }, (error) => {
-        if (error.response.status === 400) {
-          alert('Falha no cadastro!')
-        }
-      });
+          this.name = null
+          this.email = null
+          this.phone = null
+          this.user = null
+          this.pass = null
+          this.typeAddress = null
+          this.zipCode = null
+          this.street = null
+          this.number = null
+          this.complement = null
+          this.district = null
+          this.city = null
+          this.state = null
+        });
+      } catch(error) {
+        alert('Falha ao cadastrar usuário...');
+      } finally {
+        this.showLoad = false;
+      }
     }
   },
   created() {
@@ -159,6 +165,8 @@ export default {
 </script>
 
 <style scoped>
+@import '../assets/styles/loader.scss';
+
 .content {
   display: flex;
   justify-content: center;

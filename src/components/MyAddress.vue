@@ -1,5 +1,9 @@
 <template>
   <div>
+    <section class="loading" v-show="showLoad">
+      <div class="loader">Loading...</div>
+    </section>
+
     <h2>Meus Endereços</h2>
 
     <button class="add" @click="activeAdd = true">ADICIONAR ENDEREÇO</button>
@@ -100,6 +104,7 @@ export default {
   name: "MyAddress",
   data() {
     return {
+      showLoad: false,
       activeEdit: false,
       activeAdd: false,
       idUser: this.$store.state.user.id,
@@ -128,49 +133,61 @@ export default {
     }
   },
   methods: {
-    getAddressUser() {
-      return apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
-        this.addressUser = r.data.body[0].user_address;
-      }, (error) => {
-        if (error.response.status === 400) {
-          console.log('Falha ao encontrar usuário!')
-        }
-      });
+    getAddressUser: async function() {
+      this.showLoad = true;
+
+      try {
+        apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
+          this.addressUser = r.data.body[0].user_address;
+        });
+      } catch(error) {
+        alert('Falha ao localizar endereço...');
+      } finally {
+        this.showLoad = false;
+      }
     },
-    deleteAddress(idAddress) {
+    deleteAddress: async function(idAddress) {
       const confirm = window.confirm('Deseja deletar esse endereço?');
 
       if(!confirm) return; 
+
+      this.showLoad = true;
       
-      return apiToken.delete(`/user/address/${idAddress}`, this.tokenUser).then(() => {
+      try {
+        apiToken.delete(`/user/address/${idAddress}`, this.tokenUser).then(() => {
           this.getAddressUser();
-      }, (error) => {
-        if (error.response.status === 400) {
-          console.log('Nenhum endereço cadastrado!')
-        }
-      });
+        });
+      } catch(error) {
+        alert('Nenhum endereço localizado...');
+      } finally {
+        this.showLoad = false;
+      }
     },
-    getAddressUnique(idAddressUnique) {
+    getAddressUnique: async function(idAddressUnique) {
       const findIdAddressUnique = function(user_address) {
         return user_address.id === idAddressUnique;
       }
 
-      return apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
-        const obj = r.data.body[0].user_address.find(findIdAddressUnique);
+      this.showLoad = true;
 
-        this.editAddressUser.typeAddress = obj.type_name,
-        this.editAddressUser.zipCode = obj.cep,
-        this.editAddressUser.street = obj.street,
-        this.editAddressUser.complement = obj.complement,
-        this.editAddressUser.number = obj.number,
-        this.editAddressUser.district = obj.district,
-        this.editAddressUser.city = obj.city,
-        this.editAddressUser.state = obj.state
-      }, (error) => {
-        if (error.response.status === 400) {
-          console.log('Falha ao encontrar usuário!')
-        }
-      });
+      try {
+        apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
+          const obj = r.data.body[0].user_address.find(findIdAddressUnique);
+
+          this.editAddressUser.typeAddress = obj.type_name,
+          this.editAddressUser.zipCode = obj.cep,
+          this.editAddressUser.street = obj.street,
+          this.editAddressUser.complement = obj.complement,
+          this.editAddressUser.number = obj.number,
+          this.editAddressUser.district = obj.district,
+          this.editAddressUser.city = obj.city,
+          this.editAddressUser.state = obj.state
+        });
+      } catch(error) {
+        alert('Falha ao localizar usuário...');
+      } finally {
+        this.showLoad = false;
+      }
     },
     getCep() {
       if(this.activeEdit) {
@@ -197,7 +214,7 @@ export default {
         }
       }
     },
-    changeAddress(idAddress) {
+    changeAddress: async function(idAddress) {
       const addressUser = {
         user_id: this.idUser,
         type_name: this.editAddressUser.typeAddress,
@@ -210,16 +227,20 @@ export default {
         state: this.editAddressUser.state,
       }
 
-      return apiToken.put(`/user/address/${idAddress}`, addressUser, this.tokenUser).then(() => {
+      this.showLoad = true;
+
+      try {
+        apiToken.put(`/user/address/${idAddress}`, addressUser, this.tokenUser).then(() => {
           this.getAddressUser();
           this.activeEdit = false;
-      }, (error) => {
-        if (error.response.status === 400) {
-          alert('Endreço não localizado!')
-        }
-      });
+        });
+      } catch(error) {
+        alert('Falha ao atualizar endereço...');
+      } finally {
+        this.showLoad = false;
+      }
     },
-    addAddress() {
+    addAddress: async function() {
       const addressUser = {
         user_id: this.idUser,
         type_name: this.addAddressUser.typeAddress,
@@ -234,14 +255,18 @@ export default {
 
       console.log(addressUser)
 
-      return apiToken.post(`/user/address`, addressUser, this.tokenUser).then(() => {
-        this.getAddressUser();
-        this.activeAdd = false;
-      }, (error) => {
-        if (error.response.status === 400) {
-          alert('Endereço não localizado!');
-        }
-      });
+      this.showLoad = true;
+
+      try {
+        apiToken.post(`/user/address`, addressUser, this.tokenUser).then(() => {
+          this.getAddressUser();
+          this.activeAdd = false;
+        });
+      } catch(error) {
+        alert('Falha ao adicionar endereço...');
+      } finally {
+        this.showLoad = false;
+      }
     },
   },
   created() {
@@ -254,6 +279,8 @@ export default {
 </script>
 
 <style scoped>
+@import '../assets/styles/loader.scss';
+
 .content {
   display: flex;
   justify-content: center;

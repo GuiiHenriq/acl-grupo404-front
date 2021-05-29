@@ -34,7 +34,7 @@ export default new Vuex.Store({
           context.commit("UPDATE_LOGIN", true);
           window.localStorage.setItem('user', JSON.stringify(r.data));
         } else {
-          alert('Usuário não encontrado!\nEmail ou senha incorretos');
+          alert('Usuário não encontrado!\nEmail ou senha incorretos...');
           return this.$router.push('/login');
         }
       });

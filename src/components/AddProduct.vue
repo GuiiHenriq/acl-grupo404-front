@@ -1,5 +1,9 @@
 <template>
   <div>
+    <section class="loading" v-show="showLoad">
+      <div class="loader">Loading...</div>
+    </section>
+
     <section class="add-product">
       <h2>Adicionar Produto</h2>
 
@@ -65,6 +69,7 @@ export default {
   name: "AddProduct",
   data() {
     return {
+      showLoad: false,
       idUser: this.$store.state.user.id,
       tokenUser: this.$store.state.user.token,
       product: {
@@ -80,7 +85,7 @@ export default {
     };
   },
   methods: {
-    addProduct() {
+    addProduct: async function() {
       const formData = new FormData();
       const slugUrl = this.product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w]+/g, '-').toLowerCase();
       const photos = this.$refs.photos.files;
@@ -98,41 +103,53 @@ export default {
       formData.append("code", this.product.code);
       formData.append("description", this.product.description);
 
-      return apiToken.post(`/product`, formData, this.tokenUser).then(() => {
-        console.log('Produto Cadastrado!');
-        this.getProductUser();
-      }, (error) => {
-        if (error.response.status === 400) {
-          alert('Falha ao cadastrar produto!')
-        }
-      });
+      this.showLoad = true;
 
+      try {
+        apiToken.post(`/product`, formData, this.tokenUser).then(() => {
+          console.log('Produto Cadastrado!');
+          this.getProductUser();
+        });
+      } catch(error) {
+        alert('Falha ao cadastrar produto...');
+      } finally {
+        this.showLoad = false;
+      }
+      
       //let object = {};
       //formData.forEach((value, key) => object[key] = value);
       //var json = JSON.stringify(object);
     },
-    getProductUser() {
-      return apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
-        if(r.data.body[0].products.lenght < 0) return;
-        this.userProduct = r.data.body[0].products;
-      }, (error) => {
-        if (error.response.status === 400) {
-          console.log('Nenhum produto cadastrado!')
-        }
-      });
+    getProductUser: async function() {
+      this.showLoad = true;
+
+      try {
+        apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
+          if(r.data.body[0].products.lenght < 0) return;
+          this.userProduct = r.data.body[0].products;
+        });
+      } catch(error) {
+        alert('Falha ao localizar Produtos...');
+      } finally {
+        this.showLoad = false;
+      }
     },
-    deleteProduct(idProduct) {
+    deleteProduct: async function(idProduct) {
       const confirm = window.confirm('Deseja deletar esse produto?');
 
       if(!confirm) return; 
+
+      this.showLoad = true;
       
-      return apiToken.delete(`/product/${idProduct}`, this.tokenUser).then(() => {
+      try {
+        apiToken.delete(`/product/${idProduct}`, this.tokenUser).then(() => {
           this.getProductUser();
-      }, (error) => {
-        if (error.response.status === 400) {
-          console.log('Nenhum produto cadastrado!')
-        }
-      });
+        });
+      } catch(error) {
+        alert('Falha ao deletar produto...');
+      } finally {
+        this.showLoad = false;
+      }
     }
   },
   beforeCreate() {
@@ -147,6 +164,8 @@ export default {
 </script>
 
 <style scoped>
+@import '../assets/styles/loader.scss';
+
 .content {
   display: flex;
   justify-content: center;
