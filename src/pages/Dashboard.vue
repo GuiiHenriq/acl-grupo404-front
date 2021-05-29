@@ -5,7 +5,6 @@
     <div class="content" v-if="this.$store.state.user">
       <nav>
         <button @click="addProduct = true;myCharts = false;mySales = false;myCart = false;myAddress = false;editUser = false;myInformation = false">CADASTRAR PRODUTO</button>
-        <!--<button @click="mySales = true;addProduct = false;myCart = false;myAddress = false;editUser = false">MINHAS VENDAS</button>-->
         <button @click="myCart = true;myCharts = false;addProduct = false;mySales = false;myAddress = false;editUser = false;myInformation = false">MINHAS COMPRAS</button>
         <button @click="myAddress = true;myCharts = false;addProduct = false;mySales = false;myCart = false;editUser = false;myInformation = false;">MEUS ENDEREÇOS</button>
         <button @click="myCharts = true;myCart = false;addProduct = false;mySales = false;myAddress = false;editUser = false;myInformation = false">GRÁFICOS DE VENDA</button>
@@ -16,7 +15,6 @@
 
       <section>
         <AddProduct v-if="addProduct" />
-        <!--<MySales v-if="mySales" />-->
         <MyCart v-if="myCart" />
         <MyCharts v-if="myCharts" />
         <MyAddress v-if="myAddress" />
@@ -29,7 +27,6 @@
 
 <script>
 import AddProduct from '@/components/AddProduct';
-//import MySales from '@/components/MySales';
 import MyCart from '@/components/MyCart';
 import MyCharts from '@/components/MyCharts';
 import MyAddress from '@/components/MyAddress';
@@ -40,7 +37,6 @@ export default {
   name: "Dashboard",
   components: {
     AddProduct,
-    //MySales,
     MyCart,
     MyCharts,
     MyAddress,

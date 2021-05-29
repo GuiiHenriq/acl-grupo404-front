@@ -121,13 +121,10 @@ export default {
         login: this.user.user,
       };
 
-      console.log(dataUser)
-
       this.showLoad = true;
 
       try {
         apiToken.put(`/user/${this.idUser}`, dataUser, this.tokenUser).then(() => {
-          console.log('Dados alterados!');
           this.$store.commit("UPDATE_USUARIO", dataUser);
           window.localStorage.setItem('user', JSON.stringify(dataUser));
         });

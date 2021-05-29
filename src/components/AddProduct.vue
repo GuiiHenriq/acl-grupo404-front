@@ -90,8 +90,6 @@ export default {
       const slugUrl = this.product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w]+/g, '-').toLowerCase();
       const photos = this.$refs.photos.files;
 
-      console.log(photos[0])
-
       formData.append("photos", photos[0]);
       formData.append("user_id", this.idUser);
       formData.append("name", this.product.name);
@@ -107,7 +105,7 @@ export default {
 
       try {
         apiToken.post(`/product`, formData, this.tokenUser).then(() => {
-          console.log('Produto Cadastrado!');
+          alert('Produto Cadastrado');
           this.getProductUser();
         });
       } catch(error) {
@@ -115,10 +113,6 @@ export default {
       } finally {
         this.showLoad = false;
       }
-      
-      //let object = {};
-      //formData.forEach((value, key) => object[key] = value);
-      //var json = JSON.stringify(object);
     },
     getProductUser: async function() {
       this.showLoad = true;

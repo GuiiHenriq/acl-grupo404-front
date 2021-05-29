@@ -253,8 +253,6 @@ export default {
         state: this.addAddressUser.state,
       }
 
-      console.log(addressUser)
-
       this.showLoad = true;
 
       try {

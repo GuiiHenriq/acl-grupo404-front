@@ -12,11 +12,6 @@
         <label for="pass_login">Senha:</label>
         <input id="pass_login" name="pass_login" required="required" type="password" placeholder="1234" v-model="pass"/> 
       </p>
-
-      <!--<p class="msg-error">
-        Usuário não encontrado<br>
-        Email ou senha incorretos
-      </p>-->
            
       <p> 
         <input type="submit" value="Logar" @click.prevent="loginUser()"/> 
@@ -54,7 +49,7 @@ export default {
         await this.$store.dispatch("getUsuario", dataUser);
         await this.$router.push({ name: 'Dashboard'});
       } catch(error){
-        console.log(error);
+        alert('Login Inválido');
       }
     }
   },

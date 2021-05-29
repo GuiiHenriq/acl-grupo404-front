@@ -32,31 +32,6 @@ export default {
   },
   methods: {
     salesCharts: async function() {
-      /*fetch("http://18.229.144.246:2000/chart")
-      .then((result) => result.json())
-      .then((object) => {
-        const body = object.body;
-        const data = {
-          labels: body.meses,
-          datasets: [
-            {
-              label: "Venda Mensal",
-              backgroundColor: "rgb(255, 99, 132)",
-              borderColor: "rgb(255, 99, 132)",
-              data: body.data,
-            },
-          ],
-        };
-
-        const config = {
-          type: "line",
-          data,
-          options: {},
-        };
-
-        new Chart(document.getElementById("salesMonth"), config);
-      });*/
-      
       this.showLoad = true;
 
       try {

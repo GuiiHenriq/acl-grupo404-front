@@ -118,8 +118,6 @@ export default {
       }
     },
     buyItem() {
-      //const dataProduct = this.dataProduct;
-      //let qtyProduct = 0;
       const qtyBuy = Number(this.$refs.item[0].dataset.qty);
       const qtyItem = this.quantity;
       const calcQty = qtyBuy - qtyItem;
@@ -134,16 +132,9 @@ export default {
         return alert('Quantidade Indisponível');
       }
 
-      //for(let i = 0; i < dataProduct.length; i++) qtyProduct = dataProduct[i].qty = dataProduct[i].qty - 1;
-
       if(this.changeAddress == 'newAddress') this.changeAddress();
 
-
-      //if(qtyProduct <= 0) return alert('Produto Esgotou');
-      //if(this.quantity > qtyProduct) return alert('Quantidade Indisponível');
-
       this.dataItem();
-      //this.updateQty(qtyProduct);
     },
     getCep() {
       const zipCode = this.newAddressUser.zipCode.replace(/\D/g, "");
@@ -186,13 +177,10 @@ export default {
         ]
       }
 
-      console.log(dataItem);
-
       this.showLoad = true;
 
       try {
         apiToken.post(`/order`, dataItem, this.tokenUser).then(() => {
-          console.log('COMPRADO!');
           this.$router.push('/success');
         });
       } catch(error) {
