@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <h1>
-      <router-link :to="{ path: '/' }" title="Ir para Página Inicial">LOJA</router-link>
+      <router-link :to="{ path: '/' }" title="Ir para Página Inicial">LOJA 404</router-link>
     </h1>
 
     <p v-if="getNameUser">

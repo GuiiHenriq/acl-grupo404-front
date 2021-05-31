@@ -1,7 +1,7 @@
 <template>
   <footer class="footer">
     <p>
-      Grupo 404
+      Loja 404
     </p>
   </footer>
 </template>
