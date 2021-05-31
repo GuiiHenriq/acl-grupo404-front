@@ -7,7 +7,7 @@
     <section v-if="dataProduct">
       <div class="product" v-for="(product, index) in dataProduct" :key="index" :data-id="product.id" :data-qty="product.qty" ref="item">
         <ul class="photos">
-          <li><img class="thumbnail" :src="'http://18.230.115.13:2000/' + product.productImages[0].path" alt=""></li>
+          <li><img class="thumbnail" :src="urlAPI + '/' + product.productImages[0].path" alt=""></li>
         </ul>
         <div class="info">
           <h2 class="name">{{product.name}}</h2>
@@ -66,6 +66,7 @@ export default {
       },
       addressUser: null,
       addressId: 0,
+      urlAPI: process.env.VUE_APP_URL_API,
     };
   },
   methods: {

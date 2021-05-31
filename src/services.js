@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const API_URL = process.env.VUE_APP_URL_API;
+
 const axiosInstance = axios.create({
-  baseURL: "http://18.230.115.13:2000"
+  baseURL: API_URL
 });
 
 export const api = {
