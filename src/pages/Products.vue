@@ -9,7 +9,7 @@
     <div class="products" v-if="dataProduct">
       <div class="product" v-for="(product, index) in dataProduct" :key="index" v-show="product.user_id !== idUser">
         <router-link :to="{name: 'ProductItem', params: {id: product.id}}">
-          <img class="thumbnail" :src="'http://18.229.144.246:2000/' + product.productImages[0].path" alt="">
+          <img class="thumbnail" :src="'http://18.230.115.13:2000/' + product.productImages[0].path" alt="">
           <p class="price">{{product.price | priceNumber}}</p>
           <h2 class="name">{{product.name}}</h2>
           <p class="description">{{product.description}}</p>

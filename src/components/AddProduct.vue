@@ -42,7 +42,7 @@
         <li v-for="(product, index) in userProduct" :key="index">
           <div class="product">
             <div class="photo">
-              <img class="thumbnail" :src="'http://18.229.144.246:2000/' + product.productImages[0].path" alt="">
+              <img class="thumbnail" :src="'http://18.230.115.13:2000/' + product.productImages[0].path" alt="">
             </div>
             <div class="infos">
               <p class="price">{{product.price | priceNumber}}</p>
