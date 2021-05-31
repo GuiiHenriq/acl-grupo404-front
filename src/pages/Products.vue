@@ -18,7 +18,8 @@
     </div>
 
     <div class="error" v-else>
-      <h3>Nenhum produto encontrado!</h3>
+      <h3>Nenhum produto encontrado...</h3>
+      <img src="../../public/assets/not-found.svg" alt="">
     </div>
   </div>
 </template>

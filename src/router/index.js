@@ -6,6 +6,7 @@ import LoginUser from '../pages/LoginUser.vue'
 import RegisterUser from '../pages/RegisterUser.vue'
 import Dashboard from '../pages/Dashboard.vue'
 import SuccessSale from '../pages/SuccessSale.vue'
+import NotFound from '../pages/NotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,15 @@ const routes = [
     path: '/success',
     name: 'SuccessSale',
     component: SuccessSale,
+  },
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: NotFound
+  },
+  {
+    path: '*',
+    redirect: '/404'
   }
 ]
 
