@@ -21,8 +21,7 @@
           </div>
           <p class="qty">Quantidade Disponível: {{product.qty}}</p>
 
-
-          <button class="btn" @click="buyItem()">Comprar</button>
+          <button class="btn" @click="product.qty === 0 ? '' : buyItem()" :disabled="product.qty === 0">Comprar</button>
 
           <div v-if="userStore" class="address-user">
             <h3>Selecione seu Endereço</h3>
@@ -285,6 +284,12 @@ export default {
   transition: all .3s;
   border: none;
   cursor: pointer;
+}
+
+.product .btn[disabled] {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
 }
 
 .quantity-toggle {
