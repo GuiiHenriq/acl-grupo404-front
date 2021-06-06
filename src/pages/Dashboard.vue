@@ -6,6 +6,7 @@
       <nav>
         <button @click="addProduct = true;myCharts = false;mySales = false;myCart = false;myAddress = false;editUser = false;myInformation = false">CADASTRAR PRODUTO</button>
         <button @click="myCart = true;myCharts = false;addProduct = false;mySales = false;myAddress = false;editUser = false;myInformation = false">MINHAS COMPRAS</button>
+        <button @click="mySales = true;myCart = false;myCharts = false;addProduct = false;myAddress = false;editUser = false;myInformation = false">MINHAS VENDAS</button>
         <button @click="myAddress = true;myCharts = false;addProduct = false;mySales = false;myCart = false;editUser = false;myInformation = false;">MEUS ENDEREÇOS</button>
         <button @click="myCharts = true;myCart = false;addProduct = false;mySales = false;myAddress = false;editUser = false;myInformation = false">GRÁFICOS DE VENDA</button>
         <button @click="editUser = true;myCharts = false;addProduct = false;mySales = false;myCart = false;myAddress = false;myInformation = false">EDITAR USUÁRIO</button>
@@ -16,6 +17,7 @@
       <section>
         <AddProduct v-if="addProduct" />
         <MyCart v-if="myCart" />
+        <MySales v-if="mySales" />
         <MyCharts v-if="myCharts" />
         <MyAddress v-if="myAddress" />
         <MyInformation v-if="myInformation" />
@@ -28,6 +30,7 @@
 <script>
 import AddProduct from '@/components/AddProduct';
 import MyCart from '@/components/MyCart';
+import MySales from '@/components/MySales';
 import MyCharts from '@/components/MyCharts';
 import MyAddress from '@/components/MyAddress';
 import MyInformation from '@/components/MyInformation';
@@ -38,6 +41,7 @@ export default {
   components: {
     AddProduct,
     MyCart,
+    MySales,
     MyCharts,
     MyAddress,
     MyInformation,
@@ -46,8 +50,8 @@ export default {
   data() {
     return {
       addProduct: true,
-      mySales: false,
       myCart: false,
+      mySales: false,
       myCharts: false,
       myAddress: false,
       myInformation: false,

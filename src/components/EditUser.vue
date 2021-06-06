@@ -18,24 +18,6 @@
 
       <label for="user_login">Usuário:</label>
       <input id="user_login" name="user_login" required="required" type="text" placeholder="gabriel" v-model="user.user"/>
-
-      <label for="zipcode_login">Cep:</label>
-      <input id="zipcode_login" name="zipcode_login" required="required" type="text" placeholder="04660-006" v-model="user.zipCode" @keyup="getCep()"/> 
-
-      <label for="street_login">Rua:</label>
-      <input id="street_login" name="street_login" required="required" type="text" placeholder="Avenida Interlagos" v-model="user.street"/> 
-
-      <label for="number_login">Numero:</label>
-      <input id="number_login" name="number_login" required="required" type="text" placeholder="3172" v-model="user.number"/> 
-
-      <label for="district_login">Bairro:</label>
-      <input id="district_login" name="district_login" required="required" type="text" placeholder="Interlagos" v-model="user.district"/> 
-
-      <label for="city_login">Cidade:</label>
-      <input id="city_login" name="city_login" required="required" type="text" placeholder="São Paulo" v-model="user.city"/> 
-
-      <label for="state_login">Estado:</label>
-      <input id="state_login" name="state_login" required="required" type="text" placeholder="SP" v-model="user.state"/> 
        
       <div class="button">
         <input type="submit" value="Salvar Dados" @click.prevent="updateUser()"/> 
@@ -49,7 +31,7 @@
 </template>
 
 <script>
-import { apiToken, getCep } from '@/services.js'
+import { apiToken } from '@/services.js'
 
 export default {
   name: "EditUser",
@@ -64,12 +46,6 @@ export default {
         email: null,
         phone: null,
         user: null,
-        zipCode: null,
-        street: null,
-        number: null,
-        district: null,
-        city: null,
-        state: null,
       },
     };
   },
@@ -80,19 +56,13 @@ export default {
       try {
         apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
           const dataUser = r.data.body[0];
-          const addressUser = r.data.body[0].user_address[0];
 
           this.active = true;
           this.user.email = dataUser.email;
           this.user.name = dataUser.name;
           this.user.user = dataUser.login;
           this.user.phone = dataUser.phone;
-          this.user.zipCode = addressUser.cep;
-          this.user.street = addressUser.street;
-          this.user.number = addressUser.number;
-          this.user.district = addressUser.district;
-          this.user.city = addressUser.city;
-          this.user.state = addressUser.state;
+
         });
       } catch(error) {
         alert('Falha ao encontrar usuário...');
@@ -100,17 +70,6 @@ export default {
         this.showLoad = false;
       }
       
-    },
-    getCep() {
-      const zipCode = this.user.zipCode.replace(/\D/g, "");
-      if(zipCode.length === 8) {
-        getCep(zipCode).then(r => {
-          this.user.street = r.data.logradouro;
-          this.user.district = r.data.bairro;
-          this.user.city = r.data.localidade;
-          this.user.state = r.data.uf;
-        })
-      }
     },
     updateUser: async function() {
       const dataUser = {
@@ -127,6 +86,7 @@ export default {
         apiToken.put(`/user/${this.idUser}`, dataUser, this.tokenUser).then(() => {
           this.$store.commit("UPDATE_USUARIO", dataUser);
           window.localStorage.setItem('user', JSON.stringify(dataUser));
+          alert('Dados Alterados!')
         });
       } catch(error) {
         alert('Falha ao atualizar dados...');
