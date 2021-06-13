@@ -52,6 +52,7 @@ export default {
       userStore: this.$store.state.login,
       idUser: this.$store.state.user.id,
       tokenUser: this.$store.state.user.token,
+      idPurchaser: null,
       quantity: 1,
       newAddressUser: {
         typeAddress: null,
@@ -85,6 +86,7 @@ export default {
       try {
         api.get(`/product/${this.id}`).then((r) => {
           this.dataProduct = r.data.body;
+          this.idPurchaser =  r.data.body[0].user_id;
         });
       } catch(error) {
         alert('Falha ao localizar Produto...');
@@ -118,19 +120,19 @@ export default {
       }
     },
     buyItem() {
-      const qtyBuy = Number(this.$refs.item[0].dataset.qty);
+     /* const qtyBuy = Number(this.$refs.item[0].dataset.qty);
       const qtyItem = this.quantity;
-      const calcQty = qtyBuy - qtyItem;
+      const calcQty = qtyBuy - qtyItem;*/
 
       if(!this.userStore) return this.$router.push('/login');
 
       if(this.addressId == 0) return alert('Escolha seu endereço');
 
-      if(calcQty > 0 || calcQty == 0) {
+      /*if(calcQty > 0 || calcQty == 0) {
         this.updateQty(calcQty);
       } else {
         return alert('Quantidade Indisponível');
-      }
+      }*/
 
       if(this.changeAddress == 'newAddress') this.changeAddress();
 
@@ -164,11 +166,16 @@ export default {
       const priceItem = this.$refs.price[0].dataset.price;
       const idItem = this.$refs.item[0].dataset.id;
 
+      const qtyBuy = Number(this.$refs.item[0].dataset.qty);
+      const qtyItem = this.quantity;
+      const calcQty = qtyBuy - qtyItem
+
       const dataItem = {
         user_id: this.idUser,
         status_id: 1,
         user_address_id: this.addressId,
         total: priceItem * this.quantity,
+        user_id_seller: this.idPurchaser,
         products: [
             {
               product_id: idItem,
@@ -181,6 +188,7 @@ export default {
 
       try {
         apiToken.post(`/order`, dataItem, this.tokenUser).then(() => {
+          this.updateQty(calcQty);
           this.$router.push('/success');
         });
       } catch(error) {

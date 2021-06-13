@@ -36,6 +36,7 @@ export default {
 
       try {
         apiToken.get(`/chart`, this.tokenUser).then((r) => {
+          console.log(r.data.body)
           const body = r.data.body;
           const data = {
             labels: body.meses,
