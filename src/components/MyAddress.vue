@@ -9,9 +9,10 @@
     <button class="add" @click="activeAdd = true">ADICIONAR ENDEREÇO</button>
 
     <div v-if="addressUser" class="address-user">
-      <div v-for="(address, index) in addressUser" :key="index">
+      <div v-for="(address, index) in dataAddressUser" :key="index">
         <p class="type-address">{{address.type_name}}</p>
-        <p class="street-address">{{address.street}}, {{address.number}} - {{address.district}}</p>
+        <p class="street-address" v-if="address.complement">{{address.street}}, {{address.number}} {{address.complement}} - {{address.district}}</p>
+        <p class="street-address" v-else>{{address.street}}, {{address.number}} - {{address.district}}</p>
         <p class="city-address">{{address.city}}/{{address.state}}</p>
 
         <button class="edit" @click="activeEdit = true, getAddressUnique(address.id)">EDITAR</button>
@@ -45,7 +46,7 @@
             <input id="state_user" name="state_user" required="required" type="text" placeholder="SP" v-model="editAddressUser.state"/>
             
             <div class="button">
-              <input type="submit" value="Salvar Dados" @click.prevent="changeAddress(address.id)"/> 
+              <input type="submit" value="Salvar Dados" @click.prevent="changeAddress(editAddressUser.id)"/> 
             </div>
           </form>
 
@@ -119,6 +120,7 @@ export default {
         district: null,
         city: null,
         state: null,
+        id: null,
       },
       addAddressUser: {
         typeAddress: null,
@@ -130,6 +132,11 @@ export default {
         city: null,
         state: null,
       },
+    }
+  },
+  computed: {
+    dataAddressUser() {
+      return this.addressUser;
     }
   },
   methods: {
@@ -181,7 +188,8 @@ export default {
           this.editAddressUser.number = obj.number,
           this.editAddressUser.district = obj.district,
           this.editAddressUser.city = obj.city,
-          this.editAddressUser.state = obj.state
+          this.editAddressUser.state = obj.state,
+          this.editAddressUser.id = obj.id
         });
       } catch(error) {
         alert('Falha ao localizar usuário...');
