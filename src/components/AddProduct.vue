@@ -49,7 +49,9 @@
               <router-link :to="{ path: `/product/${product.id}` }" title="Ir para Página do Produto"><h3 class="name">{{product.name}}</h3></router-link>
               <p class="description">{{product.description}}</p>
 
-              <button class="delete" @click="deleteProduct(product.id)">DELETAR</button>
+              <button class="delete" @click="deleteProduct(product.id)">
+                <img src="../../public/assets/icon-delete.svg" alt="Ilustração Deletar">
+              </button>
             </div>
           </div>
         </li>
@@ -175,6 +177,10 @@ export default {
   font-size: 24px;
 }
 
+.content button {
+  position: absolute;
+}
+
 .form-login {
   display: grid;
   grid-template-columns: 100px 1fr;
@@ -236,8 +242,10 @@ export default {
   display: grid;
   grid-template-columns: minmax(100px,200px) 1fr;
   grid-gap: 20px;
-  margin-bottom: 40px;
+  padding-bottom: 20px;
+  margin-top: 20px;
   position: relative;
+  border-bottom: 1px solid #ccc;
 }
 
 .product .photo {
@@ -271,6 +279,16 @@ export default {
 
 /* ============= RESPONSIVE ============= */
 @media only screen and (max-width: 768px) {
+  .form-login {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-login textarea {
+    width: 90%;
+  }
+
   .product {
     grid-template-columns: 1fr;
     grid-gap: 10px;
@@ -279,7 +297,7 @@ export default {
   .product .thumbnail {
     width: 100%;
     height: 100%;
-    object-fit: none;
+    object-fit: cover;
   }
 }
 </style>

@@ -15,8 +15,12 @@
         <p class="street-address" v-else>{{address.street}}, {{address.number}} - {{address.district}}</p>
         <p class="city-address">{{address.city}}/{{address.state}}</p>
 
-        <button class="edit" @click="activeEdit = true, getAddressUnique(address.id)">EDITAR</button>
-        <button class="delete" @click="deleteAddress(address.id)">DELETAR</button>
+        <button class="edit" @click="activeEdit = true, getAddressUnique(address.id)">
+          <img src="../../public/assets/icon-edit.svg" alt="Ilustração Editar">
+        </button>
+        <button class="delete" @click="deleteAddress(address.id)">
+          <img src="../../public/assets/icon-delete.svg" alt="Ilustração Deletar">
+        </button>
 
         <div class="modal-change-address" v-if="activeEdit">
           <section>

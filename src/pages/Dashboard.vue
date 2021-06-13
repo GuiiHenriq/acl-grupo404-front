@@ -120,6 +120,18 @@ body {
   margin-top: 0;
 }
 
+.delete,
+.edit {
+  padding: 5px 10px !important;
+  right: 0;
+  top: 0;
+}
+
+.delete img,
+.edit img {
+  width: 30px;
+}
+
 /* ============= RESPONSIVE ============= */
 @media only screen and (max-width: 768px) {
   .content {

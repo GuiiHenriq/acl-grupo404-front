@@ -302,34 +302,6 @@ export default {
   font-weight: 500;
 }
 
-.form-login {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: 80px 1fr;
-  align-items: center;
-}
-
-.form-login input {
-  margin-bottom: 15px;
-  border-radius: 4px;
-  border: 1px solid #fff;
-  padding: 15px;
-  box-shadow: 0 4px 8px rgba(30, 60, 90, 0.10);
-  transition: all .3s;
-  font-size: 1rem;
-  font-family: Avenir,Helvetica,Arial,sans-serif;
-  margin-bottom: 15px;
-  width: 100%;
-}
-
-.form-login input[type="submit"] {
-  padding: 10px 30px;
-  background-color: #C2185B;
-  border-radius: 4px;
-  color: #fff;
-  cursor: pointer;
-}
-
 pre {
   background: #eee;
   padding: 1rem;
@@ -387,10 +359,6 @@ pre {
 @media only screen and (max-width: 768px) {
   .product {
     grid-template-columns: 1fr;
-  }
-
-  .product .photos {
-    grid-row: 2;
   }
 
   .product .info {

@@ -170,4 +170,13 @@ export default {
   grid-column: 2;
   margin-top: 10px;
 }
+
+/* ============= RESPONSIVE ============= */
+@media only screen and (max-width: 768px) {
+  .form-login {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
 </style>
