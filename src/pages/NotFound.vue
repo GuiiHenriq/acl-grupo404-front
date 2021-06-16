@@ -2,7 +2,7 @@
   <div class="error-404">
     <router-link :to="{ path: '/' }" title="Ir para Página Inicial">VOLTAR PARA HOME</router-link>
 
-    <img src="../../public/assets/404-error.svg" alt="">
+    <img src="../../public/assets/404-error.svg" alt="Imagem Ilustrativa de Não Encontrado">
   </div>
 </template>
 

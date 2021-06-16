@@ -6,6 +6,7 @@ import LoginUser from '../pages/LoginUser.vue'
 import RegisterUser from '../pages/RegisterUser.vue'
 import Dashboard from '../pages/Dashboard.vue'
 import SuccessSale from '../pages/SuccessSale.vue'
+import Contact from '../pages/Contact.vue'
 import NotFound from '../pages/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -28,7 +29,7 @@ const routes = [
     component: LoginUser
   },
   {
-    path: '/register',
+    path: '/registro',
     name: 'RegisterUser',
     component: RegisterUser
   },
@@ -39,9 +40,14 @@ const routes = [
     props: true
   },
   {
-    path: '/success',
+    path: '/sucesso',
     name: 'SuccessSale',
     component: SuccessSale,
+  },
+  {
+    path: '/contato',
+    name: 'Contact',
+    component: Contact
   },
   {
     path: '/404',

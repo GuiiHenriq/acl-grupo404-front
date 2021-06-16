@@ -19,7 +19,7 @@
            
       <p class="link">
         Ainda não tem conta?
-        <router-link :to="{ path: '/register' }" title="Ir para Página de Cadastro">Cadastre-se</router-link>
+        <router-link :to="{ path: '/registro' }" title="Ir para Página de Cadastro">Cadastre-se</router-link>
       </p>
     </form>
   </div>

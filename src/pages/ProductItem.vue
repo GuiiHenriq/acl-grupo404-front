@@ -193,7 +193,7 @@ export default {
       try {
         apiToken.post(`/order`, dataItem, this.tokenUser).then(() => {
           this.updateQty(calcQty);
-          this.$router.push('/success');
+          this.$router.push('/sucesso');
         });
       } catch(error) {
         alert('Falha ao comprar produto...');
