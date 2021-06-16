@@ -37,7 +37,7 @@
 
     <section class="products">
       <h2>Meus Produtos</h2>
-
+      
       <ul v-if="userProduct">
         <li v-for="(product, index) in userProduct" :key="index">
           <div class="product">

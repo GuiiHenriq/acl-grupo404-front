@@ -3,15 +3,20 @@
     <section class="loading" v-show="showLoad">
       <div class="loader">Loading...</div>
     </section>
+    
 
     <div v-if="dataSale" class="success-sale">
-      <h2>Parabéns, compra efetuada com sucesso!</h2>
+      <div v-for="sale in dataSale" :key="sale.id">
+        <div v-if="lastSale === sale.id">
+          <h2>Parabéns, compra efetuada com sucesso!</h2>
 
-      <h3>N° PEDIDO: <strong>{{dataSale.id}}</strong></h3>
-      <h3>VALOR TOTAL: <strong>{{dataSale.total | priceNumber}}</strong></h3>
-      <h3>QUANTIDADE: <strong>{{dataSale.products[0].qty}}</strong></h3>
+          <h3>N° PEDIDO: <strong>{{sale.id}}</strong></h3>
+          <h3>VALOR TOTAL: <strong>{{sale.total | priceNumber}}</strong></h3>
+          <h3>QUANTIDADE: <strong>{{sale.products[0].qty}}</strong></h3>
 
-      <router-link :to="{ path: '/dashboard' }" title="Ir para Página de Dashboard">IR PARA MEU PAINEL</router-link>
+          <router-link :to="{ path: '/dashboard' }" title="Ir para Página de Dashboard">IR PARA MEU PAINEL</router-link>
+        </div>
+      </div>
     </div>
 
     <div v-else>
@@ -31,7 +36,13 @@ export default {
       idUser: this.$store.state.user.id,
       tokenUser: this.$store.state.user.token,
       dataSale: null,
+      lastSale: null,
     };
+  },
+  computed: {
+    idSale() {
+      return [this.dataSale.id]
+    }
   },
   methods: {
     getSale: async function() {
@@ -39,11 +50,14 @@ export default {
 
       try {
         apiToken.get(`/user/${this.idUser}/orders/`, this.tokenUser).then((r) => {
-          const arr = [r.data.body];
-          const lastItem = arr[0][arr[0].length - 1];
-          this.dataSale = lastItem;
+          if(!r.data.body.length) return;
+          
+          const arrId = [];
 
-          //this.dataSale = r.data.body[0];
+          r.data.body.map(function(item) { return arrId.push(item.id) })
+
+          this.lastSale = Math.max(...arrId);
+          this.dataSale = r.data.body;
         });
       } catch(error) {
         this.$router.push('/');

@@ -38,7 +38,6 @@ export default {
         apiToken.post(`/chart`, {
           userId: this.$store.state.user.id
         }, this.tokenUser).then((r) => {
-          console.log(r.data.body)
           const body = r.data.body;
           const data = {
             labels: body.meses,

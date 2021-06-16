@@ -14,16 +14,16 @@
           <h3 class="price" :data-price="product.price" ref="price">{{product.price | priceNumber}}</h3>
           <p class="description">{{product.description}}</p>
 
-          <div class="quantity-toggle">
+          <div class="quantity-toggle" v-if="product.user_id !== idUser">
             <button @click="decrement()">&mdash;</button>
             <input type="text" :value="quantity">
             <button @click="increment()">&#xff0b;</button>
           </div>
           <p class="qty">Quantidade Disponível: {{product.qty}}</p>
 
-          <button class="btn" @click="product.qty === 0 ? '' : buyItem()" :disabled="product.qty === 0">Comprar</button>
+          <button class="btn" v-if="product.user_id !== idUser" @click="product.qty === 0 ? '' : buyItem()" :disabled="product.qty === 0">Comprar</button>
 
-          <div v-if="userStore" class="address-user">
+          <div v-if="userStore && product.user_id !== idUser" class="address-user">
             <h3>Selecione seu Endereço</h3>
             <div v-for="(address, index) in addressUser" :key="index">
               <input type="radio" :id="address.id" :name="address.id" :value="address.id" v-model="addressId">
@@ -35,6 +35,10 @@
         </div>
       </div>
     </section>
+
+    <div v-else>
+      <h2 class="error">Esse produto não existe</h2>
+    </div>
   </div>
 </template>
 
@@ -360,6 +364,16 @@ pre {
   color: #C2185B;
   margin-bottom: 5px;
   display: inline-block;
+}
+
+
+h2.error {
+  font-weight: 700;
+  color: #C2185B;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  font-size: 24px;
+  text-align: center;
 }
 
 

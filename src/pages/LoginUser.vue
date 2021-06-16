@@ -49,7 +49,7 @@ export default {
         await this.$store.dispatch("getUsuario", dataUser);
         await this.$router.push({ name: 'Dashboard'});
       } catch(error){
-        alert('Login Inválido');
+        console.log('Login Inválido');
       }
     }
   },
