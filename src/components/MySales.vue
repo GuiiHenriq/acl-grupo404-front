@@ -6,7 +6,7 @@
 
     <h2>Minhas Vendas</h2>
 
-    <section v-if="mySales">
+    <section v-if="mySales && addressPurchaser">
       <div v-for="sale in mySales" :key="sale.id" v-show="sale.products.length">
         <div class="sales" v-for="product in sale.products" :key="product.id" v-show="product.product.user_id === idUser">
           <div class="info">
@@ -53,6 +53,7 @@ export default {
       idUser: this.$store.state.user.id,
       tokenUser: this.$store.state.user.token,
       mySales: null,
+      idPurchaser: null,
       addressPurchaser: null,
     };
   },
@@ -63,7 +64,16 @@ export default {
       try {
         apiToken.get(`/order`, this.tokenUser).then((r) => {
           this.mySales = r.data.body.items;
-          this.getAddressPurchaser();
+
+          const self = this;
+
+          r.data.body.items.map(function(item) {
+            if(item.products.length) {
+              if(item.products[0].product.user_id === self.idUser) {
+                self.getAddressPurchaser(item.user_id);
+              }
+            }
+          });
         });
       } catch(error) {
         this.mySales = false;
@@ -71,12 +81,12 @@ export default {
         this.showLoad = false;
       }  
     },
-    getAddressPurchaser: async function() {
+    getAddressPurchaser: async function(idUser) {
       this.showLoad = true;
 
       try {
-        apiToken.get(`/user/${this.idUser}`, this.tokenUser).then((r) => {
-          this.addressPurchaser = r.data.body[0].user_address;
+        apiToken.get(`/user/${idUser}`, this.tokenUser).then((r) => {
+          return this.addressPurchaser = r.data.body[0].user_address;
         });
       } catch(error) {
         alert('Falha ao localizar endereço...');
