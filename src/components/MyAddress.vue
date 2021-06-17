@@ -8,6 +8,10 @@
 
     <button class="add" @click="activeAdd = true">ADICIONAR ENDEREÇO</button>
 
+    <p class="disclaimer">
+      <b>OBS:</b> Não é aceito endereços em duplicidade, caso seu endereço tiver o <b>TIPO DE ENDEREÇO</b> igual a outro Endereço cadastrado, o mesmo não será aceito.
+    </p>
+
     <div v-if="addressUser" class="address-user">
       <div v-for="(address, index) in dataAddressUser" :key="index">
         <p class="type-address">{{address.type_name}}</p>
@@ -253,6 +257,23 @@ export default {
       }
     },
     addAddress: async function() {
+      if (
+        (this.addAddressUser.typeAddress === "" || !this.addAddressUser.typeAddress) &&
+        (this.addAddressUser.zipCode === "" || !this.addAddressUser.zipCode) &&
+        (this.addAddressUser.street === "" || !this.addAddressUser.street) &&
+        (this.addAddressUser.number === "" || !this.addAddressUser.number) &&
+        (this.addAddressUser.district === "" || !this.addAddressUser.district) &&
+        (this.addAddressUser.city === "" || !this.addAddressUser.city) &&
+        (this.addAddressUser.state === "" || !this.addAddressUser.state)
+      ) return alert('Preencha as Informações do seu Endereço');
+      if(this.addAddressUser.typeAddress === "" || !this.addAddressUser.typeAddress) return alert('Preencha o Tipo do seu Endereço');
+      if(this.addAddressUser.zipCode === "" || !this.addAddressUser.zipCode) return alert('Preencha o CEP do seu Endereço');
+      if(this.addAddressUser.street === "" || !this.addAddressUser.street) return alert('Preencha a Rua do seu Endereço');
+      if(this.addAddressUser.number === "" || !this.addAddressUser.number) return alert('Preencha o Número do seu Endereço');
+      if(this.addAddressUser.district === "" || !this.addAddressUser.district) return alert('Preencha o Bairro do seu Endereço');
+      if(this.addAddressUser.city === "" || !this.addAddressUser.city) return alert('Preencha a Cidade do seu Endereço');
+      if(this.addAddressUser.state === "" || !this.addAddressUser.state) return alert('Preencha o Estado do seu Endereço');
+
       const addressUser = {
         user_id: this.idUser,
         type_name: this.addAddressUser.typeAddress,
@@ -307,6 +328,15 @@ export default {
 
 .add {
   margin-bottom: 40px;
+}
+
+.disclaimer {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.disclaimer b {
+  font-weight: 700;
 }
 
 .address-user div {
