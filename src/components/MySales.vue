@@ -6,7 +6,7 @@
 
     <h2>Minhas Vendas</h2>
 
-    <section v-if="mySales && addressPurchaser">
+    <section v-if="mySales">
       <div v-for="sale in mySales" :key="sale.id" v-show="sale.products.length">
         <div class="sales" v-for="product in sale.products" :key="product.id" v-show="product.product.user_id === idUser">
           <div class="info">
@@ -17,17 +17,17 @@
             <p class="client"><b>Cliente:</b> {{sale.user_order.name}}</p>
             <p class="phone"><b>Telefone:</b> <a :href="'tel:+55' + sale.user_order.phone">{{sale.user_order.phone}}</a></p>
             <p class="mail"><b>E-mail:</b> <a :href="'mailto:' + sale.user_order.email">{{sale.user_order.email}}</a></p>
-
-            <div class="address" v-for="address in addressPurchaser" :key="address.id">
-              <p v-if="address.id === sale.user_address_id">
+            
+            <div class="address">
+              <p>
                 <b>Endereço:</b>
-                <span v-if="address.complement">
-                  {{address.street}}, {{address.number}} {{address.complement}} - {{address.district}}<br />
-                  CEP: {{address.cep}} - {{address.city}}/{{address.state}}
+                <span v-if="sale.user_address.complement">
+                  {{sale.user_address.street}}, {{sale.user_address.number}} {{sale.user_address.complement}} - {{sale.user_address.district}}<br />
+                  CEP: {{sale.user_address.cep}} - {{sale.user_address.city}}/{{sale.user_address.state}}
                 </span>
                 <span v-else>
-                  {{address.street}}, {{address.number}} - {{address.district}}<br />
-                  CEP: {{address.cep}} - {{address.city}}/{{address.state}}
+                  {{sale.user_address.street}}, {{sale.user_address.number}} - {{sale.user_address.district}}<br />
+                  CEP: {{sale.user_address.cep}} - {{sale.user_address.city}}/{{sale.user_address.state}}
                 </span>
               </p>
             </div>
@@ -53,8 +53,6 @@ export default {
       idUser: this.$store.state.user.id,
       tokenUser: this.$store.state.user.token,
       mySales: null,
-      idPurchaser: null,
-      addressPurchaser: null,
     };
   },
   methods: {
@@ -64,35 +62,12 @@ export default {
       try {
         apiToken.get(`/order`, this.tokenUser).then((r) => {
           this.mySales = r.data.body.items;
-
-          const self = this;
-
-          r.data.body.items.map(function(item) {
-            if(item.products.length) {
-              if(item.products[0].product.user_id === self.idUser) {
-                self.getAddressPurchaser(item.user_id);
-              }
-            }
-          });
         });
       } catch(error) {
         this.mySales = false;
       } finally {
         this.showLoad = false;
       }  
-    },
-    getAddressPurchaser: async function(idUser) {
-      this.showLoad = true;
-
-      try {
-        apiToken.get(`/user/${idUser}`, this.tokenUser).then((r) => {
-          return this.addressPurchaser = r.data.body[0].user_address;
-        });
-      } catch(error) {
-        alert('Falha ao localizar endereço...');
-      } finally {
-        this.showLoad = false;
-      }
     },
   },
   created() {
