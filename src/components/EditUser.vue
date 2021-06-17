@@ -86,7 +86,9 @@ export default {
         apiToken.put(`/user/${this.idUser}`, dataUser, this.tokenUser).then(() => {
           this.$store.commit("UPDATE_USUARIO", dataUser);
           window.localStorage.setItem('user', JSON.stringify(dataUser));
-          alert('Dados Alterados!')
+          alert('Dados Alterados!');
+          this.$store.dispatch("deslogarUsuario");
+          this.$router.push('/login');
         });
       } catch(error) {
         alert('Falha ao atualizar dados...');
