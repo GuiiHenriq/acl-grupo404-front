@@ -37,8 +37,12 @@ export default {
   },
   methods: {
     async loginUser() {
-      if(this.email == null) return alert('E-mail inválido');
-      if(this.pass == null || this.pass.length < 4) return alert('Sua senha deve ter pelo menos 4 caracteres!');
+      if(
+        (this.email == "" || !this.email) &&
+        (this.pass == null || !this.pass)
+      ) return alert('Preencha os dados de Login')
+      if(this.email == "" || !this.email) return alert('E-mail inválido');
+      if(this.pass == null || this.pass.length < 4 || !this.pass) return alert('Senha inválida');
 
       const dataUser = {
         email: this.email,

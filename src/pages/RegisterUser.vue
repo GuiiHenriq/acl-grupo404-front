@@ -103,10 +103,34 @@ export default {
       }
     },
     createUser: async function() {
-      if(this.name == null || this.name.length < 3) return alert('Nome inválido!');
-      if(this.email == null) return alert('E-mail inválido');
-      if(this.phone == null) return alert('Telefone inválido');
-      if(this.pass == null || this.pass.length < 4) return alert('Sua senha deve ter pelo menos 4 caracteres!');
+      if (
+        (this.name === "" || this.name == null || !this.name) &&
+        (this.email === "" || this.email == null || !this.email) &&
+        (this.phone === "" || this.phone == null || !this.phone) &&
+        (this.user === "" || this.user == null || !this.user) &&
+        (this.pass == null || !this.pass) &&
+        (this.typeAddress === "" || !this.typeAddress || this.typeAddress == null) &&
+        (this.zipCode === "" || !this.zipCode || this.zipCode == null) &&
+        (this.street === "" || !this.street || this.street == null) &&
+        (this.number === "" || !this.number || this.number == null) &&
+        (this.district === "" || !this.district || this.district == null) &&
+        (this.city === "" || !this.city || this.city == null) &&
+        (this.state === "" || !this.state || this.state == null)
+      ) return alert('Preencha as Informações do seu Registro');
+
+      if(this.name === "" || this.name == null || !this.name) return alert('Preencha seu Nome');
+      if(this.email === "" || this.email == null || !this.email) return alert('Preencha seu E-mail');
+      if(this.phone === "" || this.phone == null || !this.phone) return alert('Preencha seu Telefone');
+      if(this.user === "" || this.user == null || !this.user) return alert('Preencha seu Nome de Usuário');
+      if(this.pass == null || !this.pass) return alert('Preencha sua Senha');
+      if(this.pass.length < 4) return alert('Sua senha deve ter pelo menos 4 caracteres');
+      if(this.typeAddress === "" || !this.typeAddress || this.typeAddress == null) return alert('Preencha o Tipo do seu Endereço');
+      if(this.zipCode === "" || !this.zipCode || this.zipCode == null) return alert('Preencha o CEP do seu Endereço');
+      if(this.street === "" || !this.street || this.street == null) return alert('Preencha a Rua do seu Endereço');
+      if(this.number === "" || !this.number || this.number == null) return alert('Preencha o Número do seu Endereço');
+      if(this.district === "" || !this.district || this.district == null) return alert('Preencha o Bairro do seu Endereço');
+      if(this.city === "" || !this.city || this.city == null) return alert('Preencha a Cidade do seu Endereço');
+      if(this.state === "" || !this.state || this.state == null) return alert('Preencha o Estado do seu Endereço');
 
       const dataUser = {
         name: this.name,
