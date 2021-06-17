@@ -7,11 +7,32 @@
     <h2>Minhas Compras</h2>
 
     <section v-if="myCart">
-      <div class="product" v-for="(product, index) in myCart" :key="index">
+      <div class="cart" v-for="(product, index) in myCart" :key="index">
         <div class="info">
-          <p class="price">{{product.total | priceNumber}}</p>
           <router-link :to="{ path: `/product/${product.products[0].product_id}` }" title="Ir para Página do Produto"><h3 class="title">{{product.products[0].product.name}}</h3></router-link>
-          <p class="qty">Quantidade: {{product.products[0].qty}}</p>
+          <p class="id"><b>Número do Pedido:</b> {{product.id}}</p>
+          <p class="price"><b>Valor da Compra:</b> {{product.total | priceNumber}}</p>
+          <p class="qty"><b>Quantidade:</b> {{product.products[0].qty}}</p>
+
+          <div class="address" v-if="product.user_address">  
+            <p>
+              <b>Endereço de Entrega:</b>
+              <span v-if="product.user_address.complement">
+                {{product.user_address.street}}, {{product.user_address.number}} {{product.user_address.complement}} - {{product.user_address.district}}<br />
+                CEP: {{product.user_address.cep}} - {{product.user_address.city}}/{{product.user_address.state}}
+              </span>
+              <span v-else>
+                {{product.user_address.street}}, {{product.user_address.number}} - {{product.user_address.district}}<br />
+                CEP: {{product.user_address.cep}} - {{product.user_address.city}}/{{product.user_address.state}}
+              </span>
+            </p>
+          </div>
+
+          <div class="seller" v-if="product.user_seller">
+            <p class="client"><b>Vendedor:</b> {{product.user_seller.name}}</p>
+            <p class="phone"><b>Telefone:</b> <a :href="'tel:+55' + product.user_seller.phone">{{product.user_seller.phone}}</a></p>
+            <p class="mail"><b>E-mail:</b> <a :href="'mailto:' + product.user_seller.email">{{product.user_seller.email}}</a></p>
+          </div>
         </div>
       </div>
     </section>
@@ -76,27 +97,33 @@ export default {
   font-size: 24px;
 }
 
-.product {
-  display: grid;
+.cart .title {
+  font-size: 24px;
+  color: #C2185B;
   font-weight: 700;
+  margin: 7px 0;
+}
+
+.cart {
+  display: grid;
   border-bottom: 1px solid #ccc;
   padding: 30px 0;
 }
 
-.product:first-of-type {
-  padding-top: 0;
-}
-
-.product:last-of-type {
-  border: none;
-}
-
-.product a {
+.cart a {
   text-decoration: underline;
   color: #C2185B;
 }
 
-.product .title {
+.cart p {
+  margin-bottom: 10px;
+}
+
+.cart p > b{
+  font-weight: 700;
+}
+
+.cart .title {
   font-size: 24px;
   color: #C2185B;
   font-weight: 700;
