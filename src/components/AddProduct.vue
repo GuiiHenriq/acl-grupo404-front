@@ -20,10 +20,10 @@
         <label for="amount_product">Quantidade:</label>
         <input id="amount_product" name="amount_product" required="required" type="number" placeholder="10" v-model="product.amount"/>
 
-        <label for="sku_product">Sku:</label>
+        <label for="sku_product">SKU:</label>
         <input id="sku_product" name="sku_product" required="required" type="text" placeholder="K55TR12TUT" v-model="product.sku"/>
 
-        <label for="code_product">Code:</label>
+        <label for="code_product">Código:</label>
         <input id="code_product" name="code_product" required="required" type="number" placeholder="008883333" v-model="product.code"/>
         
         <label for="description_product">Descrição:</label>
@@ -33,6 +33,9 @@
           <input type="submit" value="Adicionar Produto" @click.prevent="addProduct()"/> 
         </div>
       </form>
+      <p class="disclaimer">
+        <b>OBS:</b> Não é aceito produtos em duplicidade, caso seu produto tiver o <b>NOME</b>, <b>SKU</b> ou <b>CÓDIGO</b> igual a outros Produtos, o mesmo não será aceito.
+      </p>
     </section>
 
     <section class="products">
@@ -90,8 +93,26 @@ export default {
   methods: {
     addProduct: async function() {
       const formData = new FormData();
-      const slugUrl = this.product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w]+/g, '-').toLowerCase();
       const photos = this.$refs.photos.files;
+
+      if (
+        (this.product.name === "" || !this.product.name) &&
+        (this.product.price === "" || !this.product.price) &&
+        (photos[0] === "" || !photos[0]) &&
+        (this.product.amount === "" || !this.product.amount) &&
+        (this.product.sku === "" || !this.product.sku) &&
+        (this.product.code === "" || !this.product.code) &&
+        (this.product.description === "" || !this.product.description)
+      ) return alert('Preencha as Informações do Produto');
+      if(this.product.name === "" || !this.product.name) return alert('Preencha o Nome do Produto');
+      if(this.product.price === "" || !this.product.price) return alert('Preencha o Valor do Produto');
+      if(photos[0] === "" || !photos[0]) return alert('Insira uma Imagem do Produto');
+      if(this.product.amount === "" || !this.product.amount) return alert('Preencha a Quantidade do Produto');
+      if(this.product.sku === "" || !this.product.sku) return alert('Preencha o SKU do Produto');
+      if(this.product.code === "" || !this.product.code) return alert('Preencha o Código do Produto');
+      if(this.product.description === "" || !this.product.description) return alert('Preencha a Descrição do Produto');
+
+      const slugUrl = this.product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w]+/g, '-').toLowerCase();
 
       formData.append("photos", photos[0]);
       formData.append("user_id", this.idUser);
@@ -110,6 +131,13 @@ export default {
         apiToken.post(`/product`, formData, this.tokenUser).then(() => {
           alert('Produto Cadastrado');
           this.getProductUser();
+
+          this.product.name = "";
+          this.product.price = "";
+          this.product.amount = "";
+          this.product.sku = "";
+          this.product.code = "";
+          this.product.description = "";
         });
       } catch(error) {
         alert('Falha ao cadastrar produto...');
@@ -181,11 +209,22 @@ export default {
   position: absolute;
 }
 
+.add-product {
+  margin-bottom: 60px;
+}
+
+.add-product .disclaimer {
+  text-align: center;
+}
+
+.add-product .disclaimer b {
+  font-weight: 700;
+}
+
 .form-login {
   display: grid;
   grid-template-columns: 100px 1fr;
   align-items: center;
-  margin-bottom: 60px;
 }
 
 .form-login label {
