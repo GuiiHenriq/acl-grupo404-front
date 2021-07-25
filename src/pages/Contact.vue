@@ -8,8 +8,8 @@
     </div>
 
     <div class="phone">
-      <img src="../../public/assets/icon-phone.svg" alt="Ícone E-mail">
-      <a href="tel:+5566060331">(11) 6606-0331</a>
+      <img src="../../public/assets/icon-phone.svg" alt="Ícone Telefone">
+      <a href="tel:+551199999999">(11) 9999-9999</a>
     </div>
   </div>
 </template>
